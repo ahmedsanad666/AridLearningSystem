@@ -113,6 +113,7 @@ export default {
         this.password = user.password;
         this.imageUrl = "data:image/jpeg;base64," + user.imgByte;
         //    this.role = user.role;
+        console.log(user)
         
       } catch (e) {
         console.log(e);

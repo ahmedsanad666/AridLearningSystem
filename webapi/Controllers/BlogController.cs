@@ -134,7 +134,9 @@ namespace webapi.Controllers
 
                 if (message == "Success")
                 {
-                    return CreatedAtAction("GetBlog", new { id = Blog.Id }, Blog);
+                        var res = CreatedAtAction("GetBlog", new { id = Blog.Id }, Blog);
+                    return res;
+                 
                 }
                 else
                 {
