@@ -27,10 +27,8 @@ export default {
         body:paylaod
         // body:JSON.stringify(paylaod)
       },
-    
-
       );
-        
+
       
         if (!response.ok) {
           const error = 'failed to send data';
