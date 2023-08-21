@@ -3,6 +3,7 @@ import authModule from './modules/auth/index';
 import coursesmodule from './modules/courses/index'
 import Studentsmodule from "./modules/Students";
 import Blogmodule from "./modules/Blog/index";
+import QuizTheme from "./modules/QuizTheme/index";
 
 const store = createStore({
   state: {
@@ -24,7 +25,8 @@ const store = createStore({
     auth:authModule,
     courses:coursesmodule,
    students: Studentsmodule,
-   blog:Blogmodule
+   blog:Blogmodule,
+   Quiz:QuizTheme
   },
 
 });

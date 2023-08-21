@@ -1,5 +1,5 @@
 <template>
-  <nav class="relative" :class="currentRoute ? 'h-0' : 'bg-gray'">
+  <nav class="relative" :class="currentRoute ? 'h-0' : 'bg-gray'" v-if="ShowNav">
     <div
       class="md:container w-full md:space-x-20 pt-6 text-lightColor md:px-12 flex items-center justify-between shadow-sm pb-4"
     >
@@ -34,6 +34,9 @@
         <li>
           <router-link :to="{ name: 'Blogs' }">المدونة </router-link>
         </li>
+        <li>
+          <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link>
+        </li>
       </ul>
 
       <div
@@ -51,7 +54,7 @@
             size="xl"
             class="p-2 rounded-full hover:bg-redColor shadow-slate-900 shadow-sm hover:border-none hover:shadow-md transition-all"
           /> -->
-          <img :src="imgUrl" class="w-[2rem] rounded-full" alt="">
+          <img :src="imgUrl" class="w-[2rem] rounded-full" alt="" />
         </router-link>
       </div>
       <div class="cursor-pointer">
@@ -97,7 +100,8 @@ export default {
     return {
       showMenu: false,
       allPoints: 0,
-      imgUrl:'',
+      imgUrl: "",
+      ShowNav: true,
     };
   },
   computed: {
@@ -116,6 +120,13 @@ export default {
   },
 
   methods: {
+    checkcurrentroute(route) {
+      if (route.meta.title === "QuizTheme") {
+        this.ShowNav = false;
+      } else {
+        this.ShowNav = true;
+      }
+    },
     async currentUser() {
       let userId = this.$store.getters["auth/userId"];
 
@@ -124,10 +135,8 @@ export default {
         let user = this.$store.getters["students/allUsers"].find(
           (el) => el.id == userId
         );
-   
-    
+
         this.imgUrl = "data:image/jpeg;base64," + user.imgByte;
-       
       } catch (e) {
         console.log(e);
       }
@@ -156,6 +165,11 @@ export default {
         this.Error = "failed to Get Courses" || e.message;
         console.log;
       }
+    },
+  },
+  watch: {
+    $route(newRoute) {
+      this.checkcurrentroute(newRoute);
     },
   },
   created() {

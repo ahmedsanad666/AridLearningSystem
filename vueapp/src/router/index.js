@@ -21,6 +21,10 @@ import AllBlogs from '../views/Blog/AllBlogs.vue';
 import SingleBlog from '../views/Blog/SingleBlog.vue';
 import AddBlog from '../views/Blog/AddBlog.vue';
 
+// ..............................
+// quiz theme 
+import  QuizTheme from '../views/QuizTheme/QuizTheme.vue';
+
 const routes = [
     {
         path:'/',
@@ -187,6 +191,17 @@ const routes = [
           title: "contact",
         },
       },
+      ///.......... quiz theme
+      {
+        path:'/quizTheme',
+        component:QuizTheme,
+        name:'QuizTheme',
+        meta:{
+          title:'QuizTheme'
+        }
+
+        
+      }
 ];
 
 

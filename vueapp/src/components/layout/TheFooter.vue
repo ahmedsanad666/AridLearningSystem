@@ -52,7 +52,7 @@ export default {
   components: { SocialMedia },
   methods:{
     chekCurrentRoute(route){
-      if(route.meta.title == 'lesson'){
+      if(route.meta.title == 'lesson' || route.meta.title === 'QuizTheme'){
         this.showFooter = false;
       }else{
         this.showFooter =true;

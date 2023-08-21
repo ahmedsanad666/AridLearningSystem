@@ -11,8 +11,8 @@ namespace webapi.Controllers
         [ApiController]
         public class BlogController : ControllerBase
         {
-            private readonly ApplicationDbContext _context;
-        public static IWebHostEnvironment _webHostEnvironment;
+     private readonly ApplicationDbContext _context;
+           public static IWebHostEnvironment _webHostEnvironment;
             public BlogController(ApplicationDbContext context , IWebHostEnvironment webHostEnvironment)
             {
             _webHostEnvironment = webHostEnvironment;
