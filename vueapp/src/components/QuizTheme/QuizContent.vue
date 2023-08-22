@@ -1,13 +1,13 @@
 <template>
   <section
-    class="bg-QuizContentBg rounded-t-xl px-1 py-1 flex flex-col justify-between"
+    class="bg-QuizContentBg rounded-t-xl px-2 py-1 flex flex-col justify-between"
   >
     <h1 class="md:text-4xl text-3xl text-center py-8 mt-11">
       {{ currentQuestoin.question }}
     </h1>
 
     <ul
-      class="w-full grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 basis-[40vh] gap-3"
+      class="w-full grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 basis-[40vh] gap-3"
     >
       <li
         @click="chekAns(k)"
@@ -28,6 +28,7 @@ export default {
   props: ["Questions"],
   data() {
     return {
+      RightAnswers: [],
       colors: [
         "#D9687C",
         "#EEB243",
@@ -49,17 +50,79 @@ export default {
       const randomColorIndex = Math.floor(Math.random() * this.colors.length);
       return this.colors[randomColorIndex];
     },
+    nextQ() {
+      this.QCounter++;
+      /// display options
+      this.$refs.myLi.forEach((el) => {
+        el.style.visibility = "visible";
+      });
+      // remove chek moode
+      this.$emit("RemoveCheck");
+      const data = {
+        counter: this.QCounter,
+        time: this.currentQuestoin.time,
+      };
+
+      this.$emit("SetTime", data);
+    },
 
     loadCurrentQ() {
+      if (this.QCounter > this.allQ.length - 1) {
+        return;
+      }
       this.currentQuestoin = this.allQ[this.QCounter];
-      console.log(this.currentQuestoin);
+      const data = {
+        counter: this.QCounter,
+        time: this.currentQuestoin.time,
+      };
+
+      this.$emit("SetTime", data);
     },
     chekAns(choice) {
       const answer = this.currentQuestoin.answer - 1;
       if (choice == answer) {
-        console.log("wind");
+        // streak
+        this.RightAnswers.push(this.allQ.indexOf(this.currentQuestoin));
+        const lastIndex = this.RightAnswers.length - 1;
+
+       
+        if (this.RightAnswers.length > 2) {
+          if (
+            this.RightAnswers[lastIndex - 1] -
+              this.RightAnswers[lastIndex - 2] ===
+              1 &&
+            this.RightAnswers[lastIndex - 1] + 1 ===
+              this.RightAnswers[lastIndex]
+          ) {
+            // update streak
+            this.$emit('UpdateStreak');
+          }
+        }
+
+        //............
+        this.$refs.myLi.forEach((el) => {
+          el.style.visibility = "hidden";
+        });
+        this.$refs.myLi[answer].style.visibility = "visible";
+        this.$emit("RightAnswer");
+        setTimeout(() => {
+          this.nextQ();
+
+          this.loadCurrentQ();
+        }, 4000);
       } else {
-        console.log("failed");
+        this.$emit("WrongAnswer");
+
+        this.$refs.myLi.forEach((el) => {
+          el.style.visibility = "hidden";
+        });
+        this.$refs.myLi[choice].style.visibility = "visible";
+        this.$refs.myLi[answer].style.visibility = "visible";
+        setTimeout(() => {
+          this.nextQ();
+
+          this.loadCurrentQ();
+        }, 4000);
       }
     },
   },

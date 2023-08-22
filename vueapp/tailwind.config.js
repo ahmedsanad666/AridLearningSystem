@@ -43,8 +43,10 @@ module.exports = {
         },
         // ...... Quiz theme
         bgLight: "#1C1B1D",
-        textLight:'#545454',
+        textLight: "#545454",
         QuizContentBg: "#461A42",
+        RightAnsColor: "#27ae60",
+        WrongAnsColor: "#c0392b",
       },
     },
     fontFamily: {

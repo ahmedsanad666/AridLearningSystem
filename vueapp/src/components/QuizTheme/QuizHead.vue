@@ -5,6 +5,9 @@
     <audio controls autoplay loop class="hidden" ref="music">
       <source src="~\src\assets\images\audio\QuizTime.mp3" type="audio/mpeg" />
     </audio>
+    <audio controls autoplay class="hidden" ref="streak">
+      <source src="~\src\assets\images\audio\streak.mp3" type="audio/mpeg" />
+    </audio>
     <ul class="flex gap-4 w-3/4 items-center">
       <li
         class="p-2 px-3 rounded-md cursor-pointer bg-bgLight"
@@ -26,10 +29,18 @@
         />
       </li>
       <li
-        class="border-textLight border tracking-wider grow md:grow-0 text-textLight relative h-full md:basis-[35%] basis-[40%] py-2 px-3 rounded-md"
+        class="border-textLight border tracking-wider grow md:grow-0 relative h-full text-black select-none md:basis-[35%] basis-[40%] py-2 px-3 rounded-md"
       >
         Streak
-
+        <div
+          :style="{ width: streak + '%' }"
+          class="absolute top-0 bottom-0 right-0 streak text-white font-bold flex items-center tracking-wider bg-[#FFB400] rounded-md"
+        ></div>
+        <div
+          class="tracking-wider text-white absolute right-3 flex items-center px-4 left-0 top-0 bottom-0"
+        >
+          Streak
+        </div>
         <div
           class="border-l-2 border-textLight absolute top-1 bottom-1 right-[35%]"
         ></div>
@@ -37,7 +48,9 @@
           class="border-l-2 absolute border-textLight top-1 bottom-1 right-[65%]"
         ></div>
       </li>
-      <li class="py-2 px-4 bg-bgLight rounded-md">1/{{ QNumber }}</li>
+      <li class="py-2 px-4 bg-bgLight rounded-md">
+        {{ currentQNumber }}/{{ QNumber }}
+      </li>
     </ul>
     <ul class="flex gap-5 justify-end px-2 w-1/4 items-center">
       <li
@@ -59,13 +72,20 @@
 
 <script>
 export default {
-  props: ["QNumber", "rank"],
+  props: ["QNumber", "rank", "currentQNumber"],
   data() {
     return {
       music: true,
+      streak: 0,
     };
   },
   methods: {
+    updateStreak() {
+      if (this.streak >= 0 && this.streak < 100) {
+        this.$refs.streak.play();
+        this.streak = 33.33;
+      }
+    },
     toggleMusic() {
       if (this.music) {
         this.$refs.music.pause();
@@ -100,6 +120,7 @@ export default {
       this.$router.go(-1);
     },
   },
+  mounted() {},
 };
 </script>
 
@@ -107,5 +128,8 @@ export default {
 .icon {
   filter: invert(143%) sepia(69%) saturate(6451%) hue-rotate(197deg)
     brightness(198%) contrast(161%);
+}
+.streak {
+  transition: width 2s linear;
 }
 </style>

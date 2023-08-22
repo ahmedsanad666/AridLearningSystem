@@ -1,5 +1,9 @@
 <template>
-  <nav class="relative" :class="currentRoute ? 'h-0' : 'bg-gray'" v-if="ShowNav">
+  <nav
+    class="relative"
+    :class="currentRoute ? 'h-0' : 'bg-gray'"
+    v-if="ShowNav"
+  >
     <div
       class="md:container w-full md:space-x-20 pt-6 text-lightColor md:px-12 flex items-center justify-between shadow-sm pb-4"
     >
@@ -35,7 +39,8 @@
           <router-link :to="{ name: 'Blogs' }">المدونة </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link>
+          <router-link :to="{ name: 'fillBlank' }">quizTheme </router-link>
+          <!-- <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link> -->
         </li>
       </ul>
 
