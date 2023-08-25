@@ -22,7 +22,8 @@ import AddBlog from "../views/Blog/AddBlog.vue";
 // ..............................
 // quiz theme
 import QuizTheme from "../views/QuizTheme/QuizTheme.vue";
-import FillBlank from '../views/QuizTheme/FillBlank.vue'
+import FillBlank from "../components/QuizTheme/FillBlank.vue";
+import QuizList from "../views/QuizTheme/QuizList.vue";
 
 const routes = [
   {
@@ -185,11 +186,19 @@ const routes = [
   },
   ///.......... quiz theme
   {
-    path: "/quizTheme",
+    path: "/quizTheme/:quizId",
     component: QuizTheme,
     name: "QuizTheme",
     meta: {
       title: "QuizTheme",
+    },
+  },
+  {
+    path: "/quizList",
+    component: QuizList,
+    name: "quizList",
+    meta: {
+      title: "quiz list",
     },
   },
   {

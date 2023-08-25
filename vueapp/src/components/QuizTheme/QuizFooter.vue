@@ -46,7 +46,7 @@ export default {
     removeCheck() {
       this.checkMood = false;
       const boxRef = this.$refs.answerMood.classList;
-      if (boxRef.contains("WrongAns")) {
+      if (boxRef.contains("WrongAns ")) {
         boxRef.remove("WrongAns");
       }
       if (boxRef.contains("rightAns")) {
@@ -59,9 +59,11 @@ export default {
       this.rightAnswer = true;
 
       const boxRef = this.$refs.answerMood.classList;
-      if (boxRef.contains("wrongAns")) {
-        boxRef.remove("wrongAns");
+      if (boxRef.contains("WrongAns")) {
+        console.log("var");
+        boxRef.remove("WrongAns");
       }
+      console.log("yok");
       boxRef.add("rightAns");
     },
     WrongAns() {
