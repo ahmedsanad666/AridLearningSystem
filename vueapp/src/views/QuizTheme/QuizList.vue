@@ -1,18 +1,18 @@
 <template>
   <section class="min-h-screen py-4">
-    <h1 class="text-center py-4 my-4 md:text-3xl text-2xl">Quiziz List</h1>
+    <h1 class="text-center py-4 my-4 md:text-3xl text-2xl">قائمة الاختبارات</h1>
     <ul class="flex gap-5 m-auto w-3/4 justify-center items-center">
       <li>
-        <router-link to="/quizTheme/1">multipleChoices</router-link>
+        <router-link to="/quizTheme/1">اختيارات متعددة</router-link>
       </li>
       <li>
-        <router-link to="/quizTheme/2">fillTheBlank</router-link>
+        <router-link to="/quizTheme/2">املا الفراغات</router-link>
       </li>
       <li>
-        <router-link to="/quizTheme/3">DragDrop</router-link>
+        <router-link to="/quizTheme/3">سحب واسقاط</router-link>
       </li>
       <li>
-        <router-link to="/quizTheme/4">match</router-link>
+        <router-link to="/quizTheme/4">تطابق</router-link>
       </li>
     </ul>
   </section>

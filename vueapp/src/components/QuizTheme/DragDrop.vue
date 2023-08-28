@@ -15,7 +15,7 @@
         @click="chekAns"
         class="bg-[#c0392b] py-2 px-20 rounded-lg tracking-widest hover:text-[#c0392b] hover:bg-[#ecf0f1]"
       >
-        check
+        فحص
       </button>
     </div>
 

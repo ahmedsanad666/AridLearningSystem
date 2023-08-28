@@ -14,6 +14,9 @@ namespace webapi.Data
             
         }
 
+
+        public DbSet<MultipleQuiz> MultipleQuizs { get; set; }
+        public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseChapter> CourseChapters { get; set; }
         public DbSet<Lesson> Lessons { get; set; }

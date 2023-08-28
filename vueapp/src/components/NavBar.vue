@@ -7,12 +7,6 @@
     <div
       class="md:container w-full md:space-x-20 pt-6 text-lightColor md:px-12 flex items-center justify-between shadow-sm pb-4"
     >
-      <div class="logo">
-        <!-- <img src="../assets/images/logo.png" alt="logo" /> -->
-        <h2 class="text-center text-lightGreen font-bold text-2xl">
-          AVCD Pysycology
-        </h2>
-      </div>
       <ul class="space-x-6 grow justify-center hidden md:flex">
         <li :class="!dir ? 'mx-6 ' : ''">
           <router-link :to="{ name: 'home' }"> الرئيسية</router-link>
@@ -39,7 +33,11 @@
           <router-link :to="{ name: 'Blogs' }">المدونة </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'quizList' }">QuizList </router-link>
+          <router-link :to="{ name: 'AddQuiz' }">اضافة اختبار </router-link>
+          <!-- <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link> -->
+        </li>
+        <li>
+          <router-link :to="{ name: 'quizList' }">قائمة  الاختبارات </router-link>
           <!-- <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link> -->
         </li>
       </ul>

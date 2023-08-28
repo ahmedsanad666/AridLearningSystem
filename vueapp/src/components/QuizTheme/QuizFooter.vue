@@ -20,15 +20,15 @@
         class="md:w-[20%] w-[30%] h-[70%] bg-white rounded-lg shadow-slate-900 shadow-lg flex items-center justify-center font-bold text-black"
         v-if="rightAnswer && checkMood"
       >
-        Right Answer!! <br />
-        Great Work
+        اجابة صحيحة!! <br />
+        عمل رائع
       </div>
       <div
         class="md:w-[20%] w-[30%] h-[70%] bg-white rounded-lg shadow-slate-900 shadow-lg flex items-center justify-center font-bold text-black"
         v-else-if="!rightAnswer && checkMood"
       >
-        Wrong Answer!! <br />
-        Keep Going
+        اجابة خاطئة !! <br />
+        استمر فى المحاولة
       </div>
     </div>
   </section>

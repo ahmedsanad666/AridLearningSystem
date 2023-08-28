@@ -47,6 +47,7 @@ module.exports = {
         QuizContentBg: "#461A42",
         RightAnsColor: "#27ae60",
         WrongAnsColor: "#c0392b",
+        AddQuizColor: "#7549a3",
       },
     },
     fontFamily: {

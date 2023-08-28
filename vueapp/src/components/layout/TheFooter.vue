@@ -1,14 +1,16 @@
 <template>
-  <footer class="bg-veryDarkBlue py-10"  v-if="showFooter">
-    <div class="container grid md:grid-cols-3 grid-cols-1 space-x-4  space-y-6 text-center">
+  <footer class="bg-veryDarkBlue py-10" v-if="showFooter">
+    <div
+      class="container grid md:grid-cols-3 grid-cols-1 space-x-4 space-y-6 text-center"
+    >
       <!-- .......... -->
       <div class="flex flex-col space-y-4 mt-4">
         <h2 class="text-3xl text-lightGreen">AVCD Pysycology</h2>
-        <social-media :flex="true" class=" w-1/2 mx-auto" />
+        <social-media :flex="true" class="w-1/2 mx-auto" />
       </div>
       <!-- .......... -->
       <div class="flex flex-col space-y-4 text-lightColor">
-        <ul class="space-y-1 ">
+        <ul class="space-y-1">
           <li>
             <router-link to="#">Home</router-link>
           </li>
@@ -43,29 +45,32 @@
 <script>
 import SocialMedia from "../bases/SocialMedia.vue";
 export default {
-  data(){
-    return{
-
-      showFooter: true
-    }
+  data() {
+    return {
+      showFooter: true,
+    };
   },
   components: { SocialMedia },
-  methods:{
-    chekCurrentRoute(route){
-      if(route.meta.title == 'lesson' || route.meta.title === 'QuizTheme'){
+  methods: {
+    chekCurrentRoute(route) {
+      if (
+        route.meta.title == "lesson" ||
+        route.meta.title === "QuizTheme" ||
+        route.meta.title === "AddQuestion" || 
+        route.meta.title ==="quizlist"
+      ) {
         this.showFooter = false;
-      }else{
-        this.showFooter =true;
+      } else {
+        this.showFooter = true;
       }
-    }
+    },
   },
- watch:{
-  $route(newRoute){
-this.chekCurrentRoute(newRoute);
-  }
- }
+  watch: {
+    $route(newRoute) {
+      this.chekCurrentRoute(newRoute);
+    },
+  },
 };
-
 </script>
 
 <style lang="scss" scoped>

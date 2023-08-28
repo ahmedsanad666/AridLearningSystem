@@ -78,9 +78,9 @@ export default {
 
       if (rightAns === currentChoice) {
         this.answers.push(true);
-        this.$emit("RightAnswer");
+        // this.$emit("RightAnswer");
       } else {
-        this.$emit("WrongAnswer");
+        // this.$emit("WrongAnswer");
         this.answers.push(false);
       }
       this.chekAns();
@@ -143,6 +143,8 @@ export default {
       if (this.counter === this.currentQuestoin.choices.length) {
         if (this.answers.some((el) => el === false)) {
           // loss
+          this.$emit("WrongAnswer");
+
           setTimeout(() => {
             this.nextQ();
 
@@ -165,6 +167,8 @@ export default {
               this.$emit("UpdateStreak");
             }
           }
+          this.$emit("RightAnswer");
+
           setTimeout(() => {
             this.nextQ();
 
