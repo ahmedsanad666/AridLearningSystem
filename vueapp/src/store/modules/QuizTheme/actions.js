@@ -39,6 +39,9 @@ export default {
         );
       } else if (el.type === "DragDrop") {
         Questions = responseData.dragDropQ.filter((u) => u.quizId === el.id);
+      }else{
+        
+        Questions = responseData.combinedData.filter((u) => u.quizId === el.id);
       }
 
       return {

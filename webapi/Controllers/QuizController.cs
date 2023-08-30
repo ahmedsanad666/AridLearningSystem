@@ -43,6 +43,7 @@ namespace webapi.Controllers
 
             var combinedData = match.Select(m => new
             {
+                quizId = m.QuizId,
                 customId = m.CustomId,
                 choices = m.Choices,
                 Pics = imagsBox
