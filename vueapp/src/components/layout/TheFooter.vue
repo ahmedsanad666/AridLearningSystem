@@ -56,8 +56,9 @@ export default {
       if (
         route.meta.title == "lesson" ||
         route.meta.title === "QuizTheme" ||
-        route.meta.title === "AddQuestion" || 
-        route.meta.title ==="quizlist"
+        route.meta.title === "AddQuestion" ||
+        route.meta.title === "quizlist" ||
+        route.meta.title === "AllQuiziz"
       ) {
         this.showFooter = false;
       } else {

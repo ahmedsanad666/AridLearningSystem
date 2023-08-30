@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Data;
 
@@ -11,9 +12,11 @@ using webapi.Data;
 namespace webapi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230830065231_AddfillQuizs")]
+    partial class AddfillQuizs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace webapi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ab238294-e740-4252-9c5c-0a0e24bd5633",
+                            Id = "d894f04c-dcb4-44a2-87a1-e617c62d35eb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ceca9344-2d41-4039-bb3d-dc5b6c136d73",
+                            Id = "de37def8-d1fd-447a-9379-87d68de88181",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -392,25 +395,6 @@ namespace webapi.Migrations
                     b.HasIndex("QuizId");
 
                     b.ToTable("fillTheBlankQuizzes");
-                });
-
-            modelBuilder.Entity("webapi.Models.ImageChoice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnswerIndex")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("imageChoices");
                 });
 
             modelBuilder.Entity("webapi.Models.Lesson", b =>

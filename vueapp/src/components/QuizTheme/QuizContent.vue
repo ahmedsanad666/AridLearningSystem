@@ -3,7 +3,7 @@
     class="bg-QuizContentBg rounded-t-xl px-2 py-1 flex flex-col justify-between relative"
   >
     <h1 class="md:text-4xl text-3xl text-center py-8 mt-11">
-      {{ currentQuestoin.question }}
+      {{ currentQuestoin.questionText }}
     </h1>
 
     <ul
@@ -39,7 +39,7 @@ export default {
         "#27ae60",
         "#2d3436",
       ],
-      allQ: this.Questions.Questions,
+      allQ: this.Questions,
       currentQuestoin: [],
       QCounter: 0,
     };
@@ -67,9 +67,10 @@ export default {
     },
 
     loadCurrentQ() {
-      if (this.QCounter > this.allQ.length - 1) {
-        return;
-      }
+      // if (this.QCounter > this.allQ.length - 1) {
+      //   return;
+      // }
+      console.log(this.allQ);
       this.currentQuestoin = this.allQ[this.QCounter];
       const data = {
         counter: this.QCounter,

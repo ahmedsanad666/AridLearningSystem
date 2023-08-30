@@ -35,7 +35,7 @@
               required=""
             />
           </div>
-          <div class="form-control col-span-2">
+          <div class="form-control">
             <label for="subject">الموضوع</label>
             <input
               type="text"
@@ -44,6 +44,12 @@
               placeholder="اختر موضوع مناسب"
               required=""
             />
+          </div>
+          <div class="justify-center items-center flex flex-row py-3  ">
+            <input ref="fileInput" type="file" @change="uploadImage" class="w-1/2 mx-3" />
+            <div v-if="imageUrl">
+              <img :src="imageUrl" alt="uploaded image"  class=" rounded-md"/>
+            </div>
           </div>
           <div class="form-control col-span-2">
             <label for="des">الوصف</label>
@@ -81,9 +87,16 @@ export default {
       subject: "",
       description: "",
       error: "",
+      imageUrl: null,
+      selectedFile: null,
     };
   },
   methods: {
+    uploadImage() {
+      const fileInput = this.$refs.fileInput;
+      this.selectedFile = fileInput.files[0];
+      this.imageUrl = window.URL.createObjectURL(this.selectedFile);
+    },
     showDialog() {
       this.show = true;
     },
@@ -91,16 +104,26 @@ export default {
       this.show = false;
     },
     async SubmitQuiz() {
-      const payload = {
-        type: this.QuizType,
-        name: this.name,
-        subject: this.subject,
-        description: this.description,
-      };
+      if (!this.selectedFile) {
+        alert("slect an image");
+        return;
+      }
+      // const payload = {
+      //   type: this.QuizType,
+      //   name: this.name,
+      //   subject: this.subject,
+      //   description: this.description,
+      // };
+      const data = new FormData();
+      data.append("type", this.QuizType);
+      data.append("files", this.selectedFile);
+      data.append("name", this.name);
+      data.append("subject", this.subject);
+      data.append("description", this.description);
 
       this.isLoading = true;
       try {
-        const QuizData = await this.$store.dispatch("Quiz/AddQuiz", payload);
+        const QuizData = await this.$store.dispatch("Quiz/AddQuiz", data);
         const QuizId = QuizData.id;
         const QuizType = QuizData.type;
         this.$router.push(`/CreateQuestion/${QuizId}/${QuizType}`);
@@ -143,5 +166,8 @@ section {
   width: 100%;
   background: rgba($color: #000000, $alpha: 0.6);
   //   z-index: -1;
+}
+img {
+  width: 50px;
 }
 </style>

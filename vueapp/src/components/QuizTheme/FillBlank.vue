@@ -3,7 +3,7 @@
     class="bg-QuizContentBg rounded-t-xl px-2 py-1 flex flex-col justify-around relative"
   >
     <h1 class="md:text-4xl text-3xl text-center py-8 mt-11">
-      {{ currentQuestoin.question }}
+      {{ currentQuestoin.questionText }}
     </h1>
 
     <div class="py-5 flex justify-center items-center">
@@ -32,7 +32,7 @@ export default {
   methods: {
     nextQ() {
       this.AnsInput = "";
-      
+
       this.QCounter++;
       /// display options
 
@@ -50,6 +50,7 @@ export default {
       if (this.QCounter > this.allQ.length - 1) {
         return;
       }
+      this.allQ = Object.values(this.allQ);
       this.currentQuestoin = this.allQ[this.QCounter];
       const data = {
         counter: this.QCounter,

@@ -9,7 +9,7 @@
       ref="QuizHead"
       :currentQNumber="currentQNumber"
       :rank="rank"
-      :QNumber="QuestoinsNumber"
+      :QNumber="Qnumber"
     />
     <!-- ............................. -->
     <quiz-content
@@ -21,7 +21,7 @@
       @wrong-answer="WrongAns"
       class="grow"
       ref="QuizContent"
-      :Questions="quizData"
+      :Questions="questionsArray"
     />
     <fill-blank
       @remove-check="removeCheck"
@@ -68,6 +68,7 @@ import QuizFooter from "@/components/QuizTheme/QuizFooter.vue";
 import FillBlank from "@/components/QuizTheme/FillBlank.vue";
 import DragDrop from "@/components/QuizTheme/DragDrop.vue";
 import QuizMatch from "@/components/QuizTheme/QuizMatch.vue";
+import { compileScript } from "vue/compiler-sfc";
 export default {
   components: {
     FillBlank,
@@ -79,7 +80,11 @@ export default {
   },
   data() {
     return {
+      Qnumber: 0,
+      isLoading: false,
+      error: "",
       quizData: [],
+      questionsArray: [],
       QuizType: "",
       currentQNumber: 1,
       rank: 0,
@@ -88,11 +93,7 @@ export default {
       progressWidth: 100, // Initial progress width in percentage
     };
   },
-  computed: {
-    QuestoinsNumber() {
-      return this.quizData.Questions.length;
-    },
-  },
+  computed: {},
   methods: {
     UpdateStreak() {
       this.$refs.QuizHead.updateStreak();
@@ -128,19 +129,34 @@ export default {
       this.$refs.quizFooter.WrongAns();
     },
 
-    getQuiz() {
+    async getQuiz() {
       const QuizId = +this.$route.params.quizId;
 
-      const allQuiziz = this.$store.getters["Quiz/getQuiz"];
-      this.quizData = allQuiziz.find((el) => el.id === QuizId);
-      this.QuizType = this.quizData.type;
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch("Quiz/GetAllQuiziz");
+        const allQuiziz = this.$store.getters["Quiz/getQuiz"];
+        this.quizData = allQuiziz.find((el) => el.id === QuizId);
+        this.Qnumber = Object.keys(this.quizData.Questions).length;
+        this.QuizType = this.quizData.type;
+        const questionsArray = [];
+        for (let i = 0; i < this.Qnumber; i++) {
+          questionsArray[i] = this.quizData.Questions[i];
+        }
+        this.questionsArray = questionsArray;
+        console.log(this.QuizType);
+      } catch (e) {
+        console.log("failed");
+        this.error = e.message || "failed to get data";
+      }
+      this.isLoading = false;
     },
   },
-  created() {
-    this.getQuiz();
-  },
+  created() {},
   async mounted() {
+    await this.getQuiz();
     if (this.QuizType === "multipleChoices") {
+      console.log("umu");
       await this.$refs.QuizContent.loadCurrentQ();
     } else if (this.QuizType === "fillTheBlank") {
       await this.$refs.fillBlank.loadCurrentQ();
@@ -149,7 +165,6 @@ export default {
     } else if (this.QuizType === "match") {
       await this.$refs.match.loadCurrentQ();
     }
-    this.startQuestionTimer();
   },
 };
 </script>

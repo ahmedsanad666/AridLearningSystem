@@ -1,7 +1,7 @@
 <template>
   <section class="min-h-screen py-4 bg-slate-50">
     <div class="md:w-1/2 w-3/4 px-4 py-3 m-auto min-h-screen">
-      <h1 class="py-3 my-4">{{QuizData.name}}</h1>
+      <h1 class="py-3 my-4">{{ QuizData.name }}</h1>
       <div class="flex items-center">
         <router-link
           :to="`/AddQuestion/${QiuzData.quizId}/${QiuzData.Type}`"
@@ -21,10 +21,23 @@
           <h2 class="py-3">{{ q.questionText }}</h2>
           <div class="flex items-center gap-1">
             <hr class="w-3" />
-            <span>الختيارات</span>
+
+            <span
+              v-if="
+                QuizData.type === 'multipleChoices' ||
+                QuizData.type === 'DragDrop'
+              "
+              >الختيارات</span
+            >
+            <span v-else-if="QuizData.type === 'fillTheBlank'">الاجابة</span>
             <hr class="grow" />
           </div>
+
           <ul
+            v-if="
+              QuizData.type === 'multipleChoices' ||
+              QuizData.type === 'DragDrop'
+            "
             class="grid grid-cols-1 md:text-start text-center md:grid-cols-2 gap-3 my-2 py-2"
           >
             <li class="px-3" v-for="(c, k) in q.choices" :key="k">
@@ -38,6 +51,9 @@
               {{ c }}
             </li>
           </ul>
+          <div v-else-if="QuizData.type === 'fillTheBlank'">
+            {{ q.answer }}
+          </div>
 
           <div class="flex items-center justify-around py-2">
             <div
@@ -75,11 +91,12 @@ export default {
   methods: {
     async GetQuiziz() {
       const quizId = +this.$route.params.QuizId;
-
       await this.$store.dispatch("Quiz/GetAllQuiziz");
       this.QuizData = this.$store.getters["Quiz/getQuiz"].find(
         (q) => q.id === quizId
       );
+
+      console.log(this.QuizData);
 
       // this.QuizData = data.map((el) => {
       //   el.Questions = el.Questions.map((ul) => {

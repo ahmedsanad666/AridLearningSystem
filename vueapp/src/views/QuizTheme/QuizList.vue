@@ -3,16 +3,16 @@
     <h1 class="text-center py-4 my-4 md:text-3xl text-2xl">قائمة الاختبارات</h1>
     <ul class="flex gap-5 m-auto w-3/4 justify-center items-center">
       <li>
-        <router-link to="/quizTheme/1">اختيارات متعددة</router-link>
+        <router-link to="/AllQuiziz/MultipleQuiz">اختيارات متعددة</router-link>
       </li>
       <li>
-        <router-link to="/quizTheme/2">املا الفراغات</router-link>
+        <router-link to="/AllQuiziz/fillTheBlank">املا الفراغات</router-link>
       </li>
       <li>
-        <router-link to="/quizTheme/3">سحب واسقاط</router-link>
+        <router-link to="/AllQuiziz/DragDrop">سحب واسقاط</router-link>
       </li>
       <li>
-        <router-link to="/quizTheme/4">تطابق</router-link>
+        <router-link to="/AllQuiziz/match">تطابق</router-link>
       </li>
     </ul>
   </section>

@@ -76,15 +76,14 @@ export default {
   },
   data() {
     return {
-      selectedFile:null,
-      BlogData:{
-        apiUserId:'',
+      selectedFile: null,
+      BlogData: {
+        apiUserId: "",
         // file:'',
         title: "",
-        imageUrl:null,
-      content: "",  
-      }
-     ,
+        imageUrl: null,
+        content: "",
+      },
       error: "",
       isLoading: "",
       isValid: true,
@@ -92,8 +91,7 @@ export default {
   },
 
   methods: {
-
-    uploadImage(){
+    uploadImage() {
       const fileInput = this.$refs.fileInput;
       this.selectedFile = fileInput.files[0];
       this.BlogData.imageUrl = window.URL.createObjectURL(this.selectedFile);
@@ -126,24 +124,23 @@ export default {
         return;
       }
 
-  this.BlogData.apiUserId = this.$store.getters["auth/userId"];
-  if (!this.selectedFile) {
-        console.error('No file selected.');
+      this.BlogData.apiUserId = this.$store.getters["auth/userId"];
+      if (!this.selectedFile) {
+        console.error("No file selected.");
         return;
       }
 
-    // let formData = new FormData();
-//  for(let key in this.BlogData){
-//   formData.append(key, this.BlogData[key]);
-//   console.log(formData);
+      // let formData = new FormData();
+      //  for(let key in this.BlogData){
+      //   formData.append(key, this.BlogData[key]);
+      //   console.log(formData);
 
-//  }
-const data = new FormData();
-      data.append('apiUserId', 
-      this.BlogData.apiUserId);
-      data.append('title', this.BlogData.title);
-      data.append('content', this.BlogData.content);
-      data.append('files', this.selectedFile);
+      //  }
+      const data = new FormData();
+      data.append("apiUserId", this.BlogData.apiUserId);
+      data.append("title", this.BlogData.title);
+      data.append("content", this.BlogData.content);
+      data.append("files", this.selectedFile);
 
       this.isLoading = true;
       try {

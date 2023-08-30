@@ -24,6 +24,7 @@ import AddBlog from "../views/Blog/AddBlog.vue";
 import QuizTheme from "../views/QuizTheme/QuizTheme.vue";
 import FillBlank from "../components/QuizTheme/FillBlank.vue";
 import QuizList from "../views/QuizTheme/QuizList.vue";
+import AllQuiziz from "../views/QuizTheme/AllQuiziz.vue";
 /// quiz Admin
 import AddQuiz from "../views/QuizAdmin/AddQuiz.vue";
 import CreateQuestion from "../views/QuizAdmin/CreateQuestion.vue";
@@ -203,6 +204,14 @@ const routes = [
     name: "quizList",
     meta: {
       title: "quizlist",
+    },
+  },
+  {
+    path: "/AllQuiziz/:QuizType",
+    component: AllQuiziz,
+    name: "AllQuiziz",
+    meta: {
+      title: "AllQuiziz",
     },
   },
   {

@@ -12,6 +12,11 @@ public class Quiz
         public string Name { get; set; }
         public string Subject { get; set; }
           public string Description { get; set; }
+    [NotMapped]
+    public IFormFile Files { get; set; }
+
+    [NotMapped]
+    public byte[] ImgByte { get; set; }
    
 
     [NotMapped]
@@ -59,7 +64,7 @@ public class FillTheBlankQuiz
     public int Point { get; set; }
     public int Time { get; set; }
     public string Answer { get; set; }
-    public int QuizId { get; set; }
+    public int QuizId { get; set; } 
     public Quiz Quiz { get; set; }
 }
 
@@ -111,7 +116,7 @@ public class MatchQuiz
 
     }
     [NotMapped]
-    public ICollection<ImageChoice> ChoicesImages { get; set; }
+    public List<ImageChoice> ChoicesImages { get; set; }
     public int QuizId { get; set; }
     public Quiz Quiz { get; set; }
 

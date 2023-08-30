@@ -13,8 +13,10 @@ namespace webapi.Data
         {
             
         }
-
-
+        public DbSet<ImageChoice> imageChoices { get; set; }
+        public DbSet<MatchQuiz> MatchQuizes { get; set; }
+       public DbSet<DragDropQuiz> DragDropQuizzes { get; set; }
+        public DbSet<FillTheBlankQuiz> fillTheBlankQuizzes { get; set; }
         public DbSet<MultipleQuiz> MultipleQuizs { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<Course> Courses { get; set; }

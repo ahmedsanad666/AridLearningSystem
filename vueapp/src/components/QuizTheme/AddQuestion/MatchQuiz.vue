@@ -51,28 +51,91 @@
           @submit.prevent="submitData"
           class="h-full flex flex-col justify-between"
         >
-          <div class="w-[95%] rounded-3xl mx-auto py-5">
-            <input
-              type="text"
-              placeholder="اضافة سؤال"
-              class="h-52 w-full rounded-3xl mx-auto flex text-center bg-[#330b2f] text-white"
-              v-model.trim="questionText"
-              name=""
-              id=""
-              required=""
-            />
+          <div class="grow flex justify-end flex-col">
+            <ul
+              class="w-full grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
+            >
+              <li class="space-y-3">
+                <!-- <div v-if="pic_1">
+                  <img
+                    :src="imageUrl1"
+                    alt="uploaded image"
+                    class="rounded-md"
+                  />
+                </div> -->
+                <h3 v-if="pic_1">uploaded</h3>
+                <div v-else>
+                  <input type="number" v-model.number="AnswerIndex" />
+                  <input
+                    type="file"
+                    ref="fileInput1"
+                    @change="uploadImage(1)"
+                    :style="{ backgroundColor: getRandomColor() }"
+                  />
+
+                  <div>
+                    <span @click="sendImage(1)">upload</span>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <h3 v-if="pic_2">uploaded</h3>
+                <div v-else>
+                  <input type="number" v-model.number="AnswerIndex2" />
+
+                  <input
+                    ref="fileInput2"
+                    type="file"
+                    @change="uploadImage(2)"
+                    :style="{ backgroundColor: getRandomColor() }"
+                  />
+                  <div>
+                    <span @click="sendImage(2)">upload</span>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <h3 v-if="pic_3">uploaded</h3>
+                <div v-else>
+                  <input type="number" v-model.number="AnswerIndex3" />
+
+                  <input
+                    ref="fileInput3"
+                    type="file"
+                    @change="uploadImage(3)"
+                    :style="{ backgroundColor: getRandomColor() }"
+                  />
+                  <div>
+                    <span @click="sendImage(3)">upload</span>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <h3 v-if="pic_4">uploaded</h3>
+                <div v-else>
+                  <input type="number" v-model.number="AnswerIndex4" />
+
+                  <input
+                    ref="fileInput4"
+                    type="file"
+                    @change="uploadImage(4)"
+                    :style="{ backgroundColor: getRandomColor() }"
+                  />
+                  <div>
+                    <span @click="sendImage(4)">upload</span>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
+          <!-- ........................ -->
           <div class="grow flex justify-end flex-col">
             <ul
               class="w-full grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
             >
               <li>
-                <input
-                  type="radio"
-                  value="1"
-                  v-model="rigthAnswer"
-                  required=""
-                />
                 <input
                   type="text"
                   v-model="choices[0]"
@@ -80,7 +143,6 @@
                 />
               </li>
               <li>
-                <input type="radio" value="2" v-model="rigthAnswer" />
                 <input
                   type="text"
                   v-model="choices[1]"
@@ -88,7 +150,6 @@
                 />
               </li>
               <li>
-                <input type="radio" value="3" v-model="rigthAnswer" />
                 <input
                   type="text"
                   v-model="choices[2]"
@@ -96,7 +157,6 @@
                 />
               </li>
               <li>
-                <input type="radio" value="4" v-model="rigthAnswer" />
                 <input
                   type="text"
                   v-model="choices[3]"
@@ -105,7 +165,6 @@
               </li>
             </ul>
           </div>
-          <div></div>
         </form>
       </div>
     </div>
@@ -116,10 +175,18 @@
 export default {
   data() {
     return {
+      pic_1: false,
+      pic_2: false,
+      pic_3: false,
+      pic_4: false,
+      customId: "",
       isLoading: false,
-      questionText: "",
-      rigthAnswer: "",
-
+   
+      selectedFile: null,
+      imageUrl1: null,
+      imageUrl2: null,
+      imageUrl3: null,
+      imageUrl4: null,
       choices: [],
       colors: [
         "#D9687C",
@@ -145,9 +212,58 @@ export default {
         { value: 120, label: "2 minutes" },
         { value: 300, label: "5 minutes" },
       ],
+      AnswerIndex: 0,
+      AnswerIndex2: 0,
+      AnswerIndex3: 0,
+      AnswerIndex4: 0,
     };
   },
   methods: {
+    addCustomId() {
+      this.customId = new Date().getTime().toString();
+    },
+    async sendImage(index) {
+      console.log(this.customId);
+      console.log(this.selectedFile);
+      if (this.AnswerIndex <= 0 || this.AnswerIndex > 4) {
+        alert("please chose answer number between 1 and 4");
+        return;
+      }
+      const data = new FormData();
+      if (index === 1) {
+        data.append("AnswerIndex", this.AnswerIndex);
+        data.append("questionId", this.customId + "" + this.AnswerIndex);
+
+        this.pic_1 = true;
+      } else if (index === 2) {
+        data.append("AnswerIndex", this.AnswerIndex2);
+        data.append("questionId", this.customId + "" + this.AnswerIndex2);
+
+        this.pic_2 = true;
+      } else if (index === 3) {
+        data.append("AnswerIndex", this.AnswerIndex3);
+        data.append("questionId", this.customId + "" + this.AnswerIndex3);
+
+        this.pic_3 = true;
+      } else {
+        data.append("AnswerIndex", this.AnswerIndex4);
+        data.append("questionId", this.customId + "" + this.AnswerIndex4);
+
+        this.pic_4 = true;
+      }
+
+      data.append("files", this.selectedFile);
+
+      try {
+        await this.$store.dispatch("Quiz/uploadImage", data);
+      } catch (e) {
+        this.error = e.message || "فشل فى ارسال البيانات";
+      }
+    },
+    uploadImage(index) {
+      const fileInput = this.$refs[`fileInput${index}`];
+      this.selectedFile = fileInput.files[0];
+    },
     getRandomColor() {
       const randomColorIndex = Math.floor(Math.random() * this.colors.length);
       return this.colors[randomColorIndex];
@@ -156,26 +272,23 @@ export default {
       const QuizId = this.$route.params.QuizId;
       if (
         this.QuizPoint === null ||
-        this.questionText === "" ||
+       
         this.selectedTime === null ||
-        this.rigthAnswer === "" ||
         this.quizId === null
       ) {
         alert("رجاء املا كلالفراغات ");
         return;
       }
       const payload = {
-        questionText: this.questionText,
+        customId:this.customId,
         point: this.QuizPoint,
         time: this.selectedTime,
         choices: this.choices,
         quizId: +QuizId,
-        answer: +this.rigthAnswer,
       };
-
       this.isLoading = true;
       try {
-        await this.$store.dispatch("Quiz/AddMultipleQuestion", payload);
+        await this.$store.dispatch("Quiz/addmatchQuestion", payload);
         const QuizId = this.$route.params.QuizId;
         const QuizType = this.$route.params.QuizType;
 
@@ -187,10 +300,16 @@ export default {
       this.isLoading = false;
     },
   },
+  mounted() {
+    this.addCustomId();
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+img {
+  width: 4rem;
+}
 ul {
   li {
     position: relative;

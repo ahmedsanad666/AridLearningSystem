@@ -54,7 +54,7 @@
           <div class="w-[95%] rounded-3xl mx-auto py-5">
             <input
               type="text"
-              placeholder="اضافة سؤال"
+              placeholder=" رجاء ادخال سؤال على هذاالشكل : (خاتم الانبياء هو النبي ....)"
               class="h-52 w-full rounded-3xl mx-auto flex text-center bg-[#330b2f] text-white"
               v-model.trim="questionText"
               name=""
@@ -62,50 +62,14 @@
               required=""
             />
           </div>
-          <div class="grow flex justify-end flex-col">
-            <ul
-              class="w-full grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
-            >
-              <li>
-                <input
-                  type="radio"
-                  value="1"
-                  v-model="rigthAnswer"
-                  required=""
-                />
-                <input
-                  type="text"
-                  v-model="choices[0]"
-                  :style="{ backgroundColor: getRandomColor() }"
-                />
-              </li>
-              <li>
-                <input type="radio" value="2" v-model="rigthAnswer" />
-                <input
-                  type="text"
-                  v-model="choices[1]"
-                  :style="{ backgroundColor: getRandomColor() }"
-                />
-              </li>
-              <li>
-                <input type="radio" value="3" v-model="rigthAnswer" />
-                <input
-                  type="text"
-                  v-model="choices[2]"
-                  :style="{ backgroundColor: getRandomColor() }"
-                />
-              </li>
-              <li>
-                <input type="radio" value="4" v-model="rigthAnswer" />
-                <input
-                  type="text"
-                  v-model="choices[3]"
-                  :style="{ backgroundColor: getRandomColor() }"
-                />
-              </li>
-            </ul>
+          <div class="grow flex justify-center items-center flex-col border">
+            <input
+              v-model.trim="rigthAnswer"
+              type="text"
+              placeholder="اكتب الاجابة الصحيحة"
+              class="py-3 px-4 md:w-1/2 m-auto w-3/4 outline-none bg-[rgba(0,0,0,.5)] rounded-lg text-white focus:border"
+            />
           </div>
-          <div></div>
         </form>
       </div>
     </div>
@@ -118,8 +82,6 @@ export default {
     return {
       isLoading: false,
       questionText: "",
-      rigthAnswer: "",
-
       choices: [],
       colors: [
         "#D9687C",
@@ -133,7 +95,6 @@ export default {
       ],
       questionText: "",
       rigthAnswer: "",
-
       error: "",
       QuizPoint: 10,
       selectedTime: 30, // Default to 30 seconds
@@ -168,14 +129,13 @@ export default {
         questionText: this.questionText,
         point: this.QuizPoint,
         time: this.selectedTime,
-        choices: this.choices,
         quizId: +QuizId,
-        answer: +this.rigthAnswer,
+        answer: this.rigthAnswer,
       };
 
       this.isLoading = true;
       try {
-        await this.$store.dispatch("Quiz/AddMultipleQuestion", payload);
+        await this.$store.dispatch("Quiz/AddFillblankQuestion", payload);
         const QuizId = this.$route.params.QuizId;
         const QuizType = this.$route.params.QuizType;
 

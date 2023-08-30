@@ -54,25 +54,21 @@
           <div class="w-[95%] rounded-3xl mx-auto py-5">
             <input
               type="text"
-              placeholder="اضافة سؤال"
+              placeholder="مثال : قامت الثورة --- عام 1970 فى شهر --- "
               class="h-52 w-full rounded-3xl mx-auto flex text-center bg-[#330b2f] text-white"
               v-model.trim="questionText"
               name=""
               id=""
               required=""
             />
+            <p class="text-white text-center mt-3">الرجاء مراعاة الفصل ب ---</p>
           </div>
           <div class="grow flex justify-end flex-col">
             <ul
               class="w-full grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
             >
               <li>
-                <input
-                  type="radio"
-                  value="1"
-                  v-model="rigthAnswer"
-                  required=""
-                />
+                <input type="checkbox" v-model="answers[0]" required="" />
                 <input
                   type="text"
                   v-model="choices[0]"
@@ -80,7 +76,7 @@
                 />
               </li>
               <li>
-                <input type="radio" value="2" v-model="rigthAnswer" />
+                <input type="checkbox" v-model="answers[1]" />
                 <input
                   type="text"
                   v-model="choices[1]"
@@ -88,7 +84,7 @@
                 />
               </li>
               <li>
-                <input type="radio" value="3" v-model="rigthAnswer" />
+                <input type="checkbox" v-model="answers[2]" />
                 <input
                   type="text"
                   v-model="choices[2]"
@@ -96,7 +92,7 @@
                 />
               </li>
               <li>
-                <input type="radio" value="4" v-model="rigthAnswer" />
+                <input type="checkbox" v-model="answers[3]" />
                 <input
                   type="text"
                   v-model="choices[3]"
@@ -105,7 +101,6 @@
               </li>
             </ul>
           </div>
-          <div></div>
         </form>
       </div>
     </div>
@@ -118,7 +113,7 @@ export default {
     return {
       isLoading: false,
       questionText: "",
-      rigthAnswer: "",
+      answers: [false, false, false, false],
 
       choices: [],
       colors: [
@@ -132,8 +127,6 @@ export default {
         "#2d3436",
       ],
       questionText: "",
-      rigthAnswer: "",
-
       error: "",
       QuizPoint: 10,
       selectedTime: 30, // Default to 30 seconds
@@ -158,24 +151,32 @@ export default {
         this.QuizPoint === null ||
         this.questionText === "" ||
         this.selectedTime === null ||
-        this.rigthAnswer === "" ||
+        !this.answers.includes(true) ||
         this.quizId === null
       ) {
         alert("رجاء املا كلالفراغات ");
         return;
       }
+
+      let answers = [];
+      this.answers.forEach((el, index) => {
+        if (el) {
+          answers.push(index + 1 + "");
+        }
+      });
+
       const payload = {
         questionText: this.questionText,
         point: this.QuizPoint,
         time: this.selectedTime,
         choices: this.choices,
         quizId: +QuizId,
-        answer: +this.rigthAnswer,
+        answers: answers,
       };
 
       this.isLoading = true;
       try {
-        await this.$store.dispatch("Quiz/AddMultipleQuestion", payload);
+        await this.$store.dispatch("Quiz/AddDragDropQuiz", payload);
         const QuizId = this.$route.params.QuizId;
         const QuizType = this.$route.params.QuizType;
 
@@ -194,7 +195,8 @@ export default {
 ul {
   li {
     position: relative;
-    input[type="radio"] {
+    input[type="radio"],
+    input[type="checkbox"] {
       position: absolute;
       z-index: 999;
       top: 1rem;

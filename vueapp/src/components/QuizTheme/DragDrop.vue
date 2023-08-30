@@ -61,14 +61,11 @@ export default {
   },
   computed: {},
   methods: {
-    dragEnter(event) {
-      console.log(event.target);
-    },
+    dragEnter(event) {},
     drop(event) {
       const elem = event.dataTransfer.getData("value");
       this.answers.push(+event.dataTransfer.getData("choiceKey"));
       event.target.innerHTML = elem;
-   
     },
     handleDragStart(event, choiceKey) {
       event.dataTransfer.setData("value", event.target.innerHTML);
@@ -100,7 +97,7 @@ export default {
         return;
       }
       this.currentQuestoin = this.allQ[this.QCounter];
-      const parts = this.currentQuestoin.question.split(" ");
+      const parts = this.currentQuestoin.questionText.split(" ");
       this.QuestionText = parts.map((part) => {
         if (part === "---") {
           return `<span class="border px-8 rounded-lg test border-dashed " @dragover.prevent="dragOver" @drop.prevent=drop>---</span>`;
@@ -108,7 +105,6 @@ export default {
         return part;
       });
       this.QuestionText = this.QuestionText.join(" ");
-      console.log(this.QuestionText);
       const data = {
         counter: this.QCounter,
         time: this.currentQuestoin.time,
@@ -117,9 +113,12 @@ export default {
       this.$emit("SetTime", data);
     },
     chekAns() {
-      const rightAns = this.currentQuestoin.answer;
-      const answers = this.answers;
-
+      const rightAns = this.currentQuestoin.answers.map((proxy) => +proxy[0]);
+      // const rightAns = this.currentQuestoin.answers;
+      const answers = JSON.parse(JSON.stringify(this.answers));
+      // const answers = this.answers;
+      console.log(rightAns[0] !== answers[0]);
+      console.log(rightAns, answers);
       if (rightAns.length !== answers.length) {
         alert("fill all");
         return;
@@ -130,34 +129,34 @@ export default {
           this.$emit("WrongAnswer");
           setTimeout(() => {
             this.nextQ();
-
             this.loadCurrentQ();
           }, 4000);
+          console.log("wrong");
           return;
         }
       }
       // ///////////////////////
-      this.RightAnswers.push(this.allQ.indexOf(this.currentQuestoin));
-      const lastIndex = this.RightAnswers.length - 1;
 
-      if (this.RightAnswers.length > 2) {
-        if (
-          this.RightAnswers[lastIndex - 1] -
-            this.RightAnswers[lastIndex - 2] ===
-            1 &&
-          this.RightAnswers[lastIndex - 1] + 1 === this.RightAnswers[lastIndex]
-        ) {
-          // update streak
-          this.$emit("UpdateStreak");
-        }
-      }
+      // this.RightAnswers.push(this.allQ.indexOf(this.currentQuestoin));
+      // const lastIndex = this.RightAnswers.length - 1;
+
+      // if (this.RightAnswers.length > 2) {
+      //   if (
+      //     this.RightAnswers[lastIndex - 1] -
+      //       this.RightAnswers[lastIndex - 2] ===
+      //       1 &&
+      //     this.RightAnswers[lastIndex - 1] + 1 === this.RightAnswers[lastIndex]
+      //   ) {
+      //     // update streak
+      //     this.$emit("UpdateStreak");
+      //   }
+      // }
       this.$emit("RightAnswer");
       setTimeout(() => {
         this.nextQ();
 
         this.loadCurrentQ();
       }, 4000);
-      console.log("true");
     },
   },
 };

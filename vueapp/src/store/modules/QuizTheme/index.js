@@ -8,6 +8,8 @@ export default {
   namespaced: true,
   state() {
     return {
+      fillBlankQuizis:[],
+      multipleQuiziz:[],
       Quiziz: [
         // {
         //   id: 1,

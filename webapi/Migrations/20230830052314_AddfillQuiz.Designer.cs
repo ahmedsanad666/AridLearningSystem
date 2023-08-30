@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Data;
 
@@ -11,9 +12,11 @@ using webapi.Data;
 namespace webapi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230830052314_AddfillQuiz")]
+    partial class AddfillQuiz
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace webapi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ab238294-e740-4252-9c5c-0a0e24bd5633",
+                            Id = "7cf56665-4f4f-4442-949d-08128999e01a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ceca9344-2d41-4039-bb3d-dc5b6c136d73",
+                            Id = "a70857aa-f3ed-43bb-9c2e-dc16e49b25d2",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -331,39 +334,6 @@ namespace webapi.Migrations
                     b.ToTable("CourseChapters");
                 });
 
-            modelBuilder.Entity("webapi.Models.DragDropQuiz", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AnswersString")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ChoicesString")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Point")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuizId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Time")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuizId");
-
-                    b.ToTable("DragDropQuizzes");
-                });
-
             modelBuilder.Entity("webapi.Models.FillTheBlankQuiz", b =>
                 {
                     b.Property<int>("Id")
@@ -392,25 +362,6 @@ namespace webapi.Migrations
                     b.HasIndex("QuizId");
 
                     b.ToTable("fillTheBlankQuizzes");
-                });
-
-            modelBuilder.Entity("webapi.Models.ImageChoice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnswerIndex")
-                        .HasColumnType("int");
-
-                    b.Property<string>("QuestionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("imageChoices");
                 });
 
             modelBuilder.Entity("webapi.Models.Lesson", b =>
@@ -447,36 +398,6 @@ namespace webapi.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Lessons");
-                });
-
-            modelBuilder.Entity("webapi.Models.MatchQuiz", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ChoicesString")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Point")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuizId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Time")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuizId");
-
-                    b.ToTable("MatchQuizes");
                 });
 
             modelBuilder.Entity("webapi.Models.MultipleQuiz", b =>
@@ -720,17 +641,6 @@ namespace webapi.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("webapi.Models.DragDropQuiz", b =>
-                {
-                    b.HasOne("webapi.Models.Quiz", "Quiz")
-                        .WithMany()
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quiz");
-                });
-
             modelBuilder.Entity("webapi.Models.FillTheBlankQuiz", b =>
                 {
                     b.HasOne("webapi.Models.Quiz", "Quiz")
@@ -757,17 +667,6 @@ namespace webapi.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("CourseChapter");
-                });
-
-            modelBuilder.Entity("webapi.Models.MatchQuiz", b =>
-                {
-                    b.HasOne("webapi.Models.Quiz", "Quiz")
-                        .WithMany()
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quiz");
                 });
 
             modelBuilder.Entity("webapi.Models.MultipleQuiz", b =>
