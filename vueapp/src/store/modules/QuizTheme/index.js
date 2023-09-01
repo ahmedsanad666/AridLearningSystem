@@ -8,8 +8,11 @@ export default {
   namespaced: true,
   state() {
     return {
-      fillBlankQuizis:[],
-      multipleQuiziz:[],
+      singleQuizResult:[],
+      QuizResults: [],
+      matchQuiziz: [],
+      fillBlankQuizis: [],
+      multipleQuiziz: [],
       Quiziz: [
         // {
         //   id: 1,
@@ -52,7 +55,6 @@ export default {
         //       ],
         //       point: 20,
         //       time: 200,
-
         //       answer: 2,
         //     },
         //   ],
@@ -63,21 +65,18 @@ export default {
         //   Questions: [
         //     {
         //       question: "محمد رسول الله ... رسالته إلى البشرية. ",
-
         //       point: 10,
         //       time: 200,
         //       answer: "أوصى",
         //     },
         //     {
         //       question: "... هي عاصمة مصر.",
-
         //       point: 50,
         //       time: 200,
         //       answer: "القاهرة",
         //     },
         //     {
         //       question: "الثعبان حيوان ... ينتمي إلى عائلة الزواحف.",
-
         //       point: 10,
         //       time: 200,
         //       answer: "قار",
@@ -117,7 +116,6 @@ export default {
         //   Questions: [
         //     {
         //       choices: ["ولد", "فتاة ", "قلم", "مصباح "],
-
         //       Pics: [
         //         {
         //           img: "https://cdn-icons-png.flaticon.com/512/4329/4329449.png",
@@ -137,10 +135,8 @@ export default {
         //         },
         //       ],
         //       point: 10,
-
         //       time: 200,
         //     },
-
         //     {
         //       choices: ["حليب", "تفاحة ", "اسد", "يد "],
         //       Pics: [
@@ -162,7 +158,6 @@ export default {
         //         },
         //       ],
         //       point: 10,
-
         //       time: 200,
         //     },
         //     {
@@ -186,7 +181,6 @@ export default {
         //         },
         //       ],
         //       point: 10,
-
         //       time: 200,
         //     },
         //   ],

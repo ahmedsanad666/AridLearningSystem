@@ -4,10 +4,18 @@ export default {
   },
   setmultipleQuiziz(state, payload) {
     state.multipleQuiziz = payload;
-    console.log(state.multipleQuiziz);
   },
   setFillblankQuizis(state, payload) {
     state.fillBlankQuizis = payload;
-    console.log(state.fillBlankQuizis);
   },
+  SetmatchQuiziz(state, payload) {
+    state.matchQuiziz = payload;
+  },
+  QuizResults(state, payload) {
+    state.QuizResults = payload;
+    console.log(state.QuizResults);
+  },
+  singleQuizResult(state,payload){
+    state.singleQuizResult = payload
+  }
 };

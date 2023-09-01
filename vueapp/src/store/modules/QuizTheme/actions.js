@@ -39,8 +39,7 @@ export default {
         );
       } else if (el.type === "DragDrop") {
         Questions = responseData.dragDropQ.filter((u) => u.quizId === el.id);
-      }else{
-        
+      } else {
         Questions = responseData.combinedData.filter((u) => u.quizId === el.id);
       }
 
@@ -49,7 +48,6 @@ export default {
         Questions: { ...Questions },
       };
     });
-    console.log(Quiziz);
 
     context.commit("setQuizis", Quiziz);
   },
@@ -79,10 +77,8 @@ export default {
       const error = new Error(responseData.message || "failed to get data");
       throw error;
     }
-
     context.commit("setmultipleQuiziz", responseData);
   },
-
   //......................
   async fillBlankQuizis(context, payload) {
     const response = await fetch(`${BaseUrl}/${payload}`);
@@ -156,11 +152,65 @@ export default {
     });
 
     if (!response.ok) {
-      console.log(response);
-
-      const error =  "failed to add quiz";
+      const error = "failed to add quiz";
       throw error;
     }
-    console.log(response);
+  },
+
+  // ............... match quiz api
+  async allmatchQuiziz(context) {
+    const response = await fetch(`${BaseUrl}/allMatchQuiziz`);
+
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = new Error(responseData.message || "failed to get data");
+      throw error;
+    }
+
+    const quiziz = [];
+
+    responseData.forEach((element) => {
+      quiziz.push(element);
+    });
+
+    console.log(quiziz);
+    context.commit("SetmatchQuiziz", quiziz);
+  },
+
+  // Quiz result
+  async AddQuizResult(context, payload) {
+    const response = await fetch(`${BaseUrl}/AddQuizResult`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = new Error("failed to send data");
+      throw error;
+    }
+    const results = [];
+    for (const key in responseData) {
+      results.push(responseData[key]);
+    }
+    context.commit("QuizResults", results);
+  },
+
+  async GetSingleQuizResult(context, id) {
+    const response = await fetch(`${BaseUrl}/done/${id}`);
+
+    const responseData = await response.json();
+    if (!response.ok) {
+      const error = new Error("failed to send data");
+      throw error;
+    }
+    const results = [];
+    for (const key in responseData) {
+      results.push(responseData[key]);
+    }
+    context.commit("singleQuizResult", results);
   },
 };

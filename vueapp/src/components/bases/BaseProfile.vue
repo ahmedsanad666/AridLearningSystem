@@ -78,7 +78,7 @@ export default {
   data() {
     return {
       selectedFile: null,
-      imageUrl:null,
+      imageUrl: null,
       id: "",
       ArName: "",
       EnName: "",
@@ -105,16 +105,15 @@ export default {
         let user = this.$store.getters["students/allUsers"].find(
           (el) => el.id == userId
         );
-        
+
         this.id = user.id;
         this.email = user.email;
         this.ArName = user.arName;
         this.EnName = user.enName;
         this.password = user.password;
-        this.imageUrl = "data:image/jpeg;base64," + user.imgByte;
+        this.imageUrl = "data:image/jpeg;," + user.imgByte;
         //    this.role = user.role;
-        console.log(user)
-        
+        console.log(user);
       } catch (e) {
         console.log(e);
       }

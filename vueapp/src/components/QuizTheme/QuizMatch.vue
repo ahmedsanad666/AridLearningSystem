@@ -1,19 +1,74 @@
 <template>
+  <section v-if="currentMood === 'showResult'" class="py-6">
+    <base-spinner v-if="isLoading"></base-spinner>
+    <div
+      v-else
+      class="resultBox m-auto rounded-lg my-5 lg:w-[25%] md:w-[50%] w-[60%] border"
+    >
+      <h2
+        class="py-6 rounded-lg text-center font-bold md:text-3xl text-2xl bg-QuizContentBg"
+      >
+        Quiz Rank
+      </h2>
+      <ul class="space-y-3 px-1 py-2">
+        <li
+          v-for="(result, key) in QuizResults"
+          :key="key"
+          class="rounded-md cursor-pointer flex justify-between px-4 py-3 text-black font-bold"
+          :class="`${
+            result.apiUser.id === currentUserId ? ' bg-green-500' : ' bg-white'
+          }`"
+        >
+          <span>{{ result.apiUser.enName }}</span>
+          <span>{{ result.totalPoints }}</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <section v-else-if="currentMood === 'TokenQuiz'">
+    <h1 class="text-center py-3 font-bold lg:text-3xl md:text-2xl text-xl">
+      already Token
+    </h1>    <base-spinner v-if="isLoading"></base-spinner>
+    <div
+      v-else
+      class="resultBox m-auto rounded-lg my-5 lg:w-[25%] md:w-[50%] w-[60%] border"
+    >
+      <h2
+        class="py-6 rounded-lg text-center font-bold md:text-3xl text-2xl bg-QuizContentBg"
+      >
+        Quiz Rank
+      </h2>
+      <ul class="space-y-3 px-1 py-2">
+        <li
+          v-for="(result, key) in QuizResults"
+          :key="key"
+          class="rounded-md cursor-pointer flex justify-between px-4 py-3 text-black font-bold"
+          :class="`${
+            result.apiUser.id === currentUserId ? ' bg-green-500' : ' bg-white'
+          }`"
+        >
+          <span>{{ result.apiUser.enName }}</span>
+          <span>{{ result.totalPoints }}</span>
+        </li>
+      </ul>
+    </div>
+  </section>
   <section
+    v-else
     class="bg-QuizContentBg rounded-t-xl px-2 py-1 flex flex-col justify-around relative"
   >
     <ul class="w-full grid grid-cols-4 basis-[15vh] md:gap-8 gap-3">
       <li
         ref="myLi"
         draggable="true"
-        @dragstart="dragStart($event, q.answer, k, q.img)"
+        @dragstart="dragStart($event, q.answerIndex, k, q.imgByte)"
         :style="{ backgroundColor: getRandomColor() }"
         class="flex justify-center grow items-center md:py-0 py-3 background-container md:text-3xl text-2xl rounded-md cursor-pointer"
-        v-for="(q, k) in currentQuestoin.Pics"
+        v-for="(q, k) in currentQuestoin.pics"
         :key="k"
       >
         <img
-          :src="q.img"
+          :src="`data:image/jpeg;base64,${q.imgByte}`"
           alt=""
           class="md:h-3/4 md:w-3/4 lg:w-1/2 lg:h-1/2 object-contain"
         />
@@ -57,11 +112,64 @@ export default {
       currentQuestoin: [],
       QCounter: 0,
       answers: [],
+      totalPoints: 0,
+      currentMood:'',
       counter: 0,
+      QuizResults: [],
+      isLoading: false,
     };
   },
-  computed: {},
+  computed: {
+    currentUserId() {
+      return this.$store.getters["auth/userId"];
+    },
+  },
   methods: {
+    async AddResult() {
+      const quizId = +this.$route.params.quizId;
+      const userId = this.$store.getters["auth/userId"];
+      const payload = {
+        totalPoints: this.totalPoints,
+        quizId: quizId,
+        apiUserId: userId,
+      };
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch("Quiz/AddQuizResult", payload);
+        this.QuizResults = this.$store.getters["Quiz/getQuizResults"];
+        this.QuizResults = this.QuizResults.slice().sort(
+          (a, b) => b.totalPoints - a.totalPoints
+        );
+      } catch (e) {
+        this.error = e.message || "failed to send data";
+      }
+      this.isLoading = false;
+    },
+    async checkToken() {
+      const quizId = +this.$route.params.quizId;
+      const userId = this.$store.getters["auth/userId"];
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch("Quiz/GetSingleQuizResult", quizId);
+        const results = this.$store.getters["Quiz/getsingleQuizResult"];
+
+        results.some((el) => {
+          if (el.apiUser.id === userId || el.quizId === quizId) {
+            this.currentMood = "TokenQuiz";
+            this.QuizResults = results;
+            this.QuizResults = this.QuizResults.slice().sort(
+              (a, b) => b.totalPoints - a.totalPoints
+            );
+            console.log(this.QuizResults);
+            this.$emit("TokenQuiz");
+            return;
+          }
+        });
+      } catch (e) {
+        this.error = e.message || "failed to send data";
+      }
+      this.isLoading = false;
+    },
     dragEnter(event) {
       event.target.classList.add("hoverd");
     },
@@ -78,6 +186,8 @@ export default {
 
       if (rightAns === currentChoice) {
         this.answers.push(true);
+        this.totalPoints = this.totalPoints + this.currentQuestoin.point;
+
         // this.$emit("RightAnswer");
       } else {
         // this.$emit("WrongAnswer");
@@ -90,7 +200,7 @@ export default {
       event.target.innerHTML = "";
       event.target.insertAdjacentHTML(
         "afterbegin",
-        `<img class="md:h-3/4 md:w-3/4 lg:w-1/2 lg:h-1/2 object-contain" src="${imgSrc}"> </img>`
+        `<img class="md:h-3/4 md:w-3/4 lg:w-1/2 lg:h-1/2 object-contain" src="data:image/jpeg;base64,${imgSrc}"> </img>`
       );
     },
     dragStart(event, index, itemId, imgSrc) {
@@ -128,9 +238,16 @@ export default {
     },
 
     loadCurrentQ() {
+      this.checkToken();
+      console.log(this.QCounter, this.allQ.length - 1);
       if (this.QCounter > this.allQ.length - 1) {
+        this.currentMood = "showResult";
+        this.AddResult();
         return;
       }
+
+     this.allQ = Object.values(this.allQ);
+
       this.currentQuestoin = this.allQ[this.QCounter];
       const data = {
         counter: this.QCounter,
@@ -151,22 +268,6 @@ export default {
             this.loadCurrentQ();
           }, 1000);
         } else {
-          // wind
-          this.RightAnswers.push(this.allQ.indexOf(this.currentQuestoin));
-          const lastIndex = this.RightAnswers.length - 1;
-
-          if (this.RightAnswers.length > 2) {
-            if (
-              this.RightAnswers[lastIndex - 1] -
-                this.RightAnswers[lastIndex - 2] ===
-                1 &&
-              this.RightAnswers[lastIndex - 1] + 1 ===
-                this.RightAnswers[lastIndex]
-            ) {
-              // update streak
-              this.$emit("UpdateStreak");
-            }
-          }
           this.$emit("RightAnswer");
 
           setTimeout(() => {

@@ -1,11 +1,13 @@
 <template>
   <section class="min-h-screen bg-black text-white flex flex-col gap-1">
     <div
+      v-if="!tokenQuiz"
       ref="timebar"
       class="progress-bar rounded-lg"
       :style="{ width: progressWidth + '%' }"
     ></div>
     <quiz-head
+      v-if="!tokenQuiz"
       ref="QuizHead"
       :currentQNumber="currentQNumber"
       :rank="rank"
@@ -14,6 +16,7 @@
     <!-- ............................. -->
     <quiz-content
       v-if="QuizType === 'multipleChoices'"
+      @token-quiz="hideHeader"
       @update-streak="UpdateStreak"
       @set-time="SetTime($event)"
       @remove-check="removeCheck"
@@ -24,6 +27,7 @@
       :Questions="questionsArray"
     />
     <fill-blank
+    @token-quiz="hideHeader"
       @remove-check="removeCheck"
       @wrong-answer="WrongAns"
       @update-streak="UpdateStreak"
@@ -35,6 +39,7 @@
       :Questions="quizData"
     ></fill-blank>
     <drag-drop
+    @token-quiz="hideHeader"
       @remove-check="removeCheck"
       @wrong-answer="WrongAns"
       @update-streak="UpdateStreak"
@@ -46,7 +51,8 @@
       :Questions="quizData"
     ></drag-drop>
     <quiz-match
-      v-if="QuizType === 'match'"
+    @token-quiz="hideHeader"
+      v-else-if="QuizType === 'match'"
       @update-streak="UpdateStreak"
       @set-time="SetTime($event)"
       @remove-check="removeCheck"
@@ -56,6 +62,11 @@
       ref="match"
       :Questions="quizData"
     />
+    <div v-else-if="QuizType === 'NoQuestionsYet'" class="my-4 py-5">
+      <h1 class="text-white text-center md:text-4xl text-3xl">
+        No Questions Added Yet
+      </h1>
+    </div>
     <!-- ......................... -->
     <quiz-footer ref="quizFooter" />
   </section>
@@ -68,7 +79,6 @@ import QuizFooter from "@/components/QuizTheme/QuizFooter.vue";
 import FillBlank from "@/components/QuizTheme/FillBlank.vue";
 import DragDrop from "@/components/QuizTheme/DragDrop.vue";
 import QuizMatch from "@/components/QuizTheme/QuizMatch.vue";
-import { compileScript } from "vue/compiler-sfc";
 export default {
   components: {
     FillBlank,
@@ -80,6 +90,8 @@ export default {
   },
   data() {
     return {
+      tokenQuiz: false,
+      currentMood: "",
       Qnumber: 0,
       isLoading: false,
       error: "",
@@ -95,6 +107,9 @@ export default {
   },
   computed: {},
   methods: {
+    hideHeader() {
+      this.tokenQuiz = true;
+    },
     UpdateStreak() {
       this.$refs.QuizHead.updateStreak();
     },
@@ -129,6 +144,12 @@ export default {
       this.$refs.quizFooter.WrongAns();
     },
 
+    checkEmptyObj(obj) {
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) return false;
+      }
+      return true;
+    },
     async getQuiz() {
       const QuizId = +this.$route.params.quizId;
 
@@ -139,12 +160,16 @@ export default {
         this.quizData = allQuiziz.find((el) => el.id === QuizId);
         this.Qnumber = Object.keys(this.quizData.Questions).length;
         this.QuizType = this.quizData.type;
+        console.log(this.QuizType);
+        if (this.checkEmptyObj(this.quizData.Questions)) {
+          this.QuizType = "NoQuestionsYet";
+          return;
+        }
         const questionsArray = [];
         for (let i = 0; i < this.Qnumber; i++) {
           questionsArray[i] = this.quizData.Questions[i];
         }
         this.questionsArray = questionsArray;
-        console.log(this.QuizType);
       } catch (e) {
         console.log("failed");
         this.error = e.message || "failed to get data";
@@ -154,9 +179,9 @@ export default {
   },
   created() {},
   async mounted() {
+    this.tokenQuiz = false;
     await this.getQuiz();
     if (this.QuizType === "multipleChoices") {
-      console.log("umu");
       await this.$refs.QuizContent.loadCurrentQ();
     } else if (this.QuizType === "fillTheBlank") {
       await this.$refs.fillBlank.loadCurrentQ();

@@ -8,4 +8,13 @@ export default {
   getfillBlankQuizis(state) {
     return state.fillBlankQuizis;
   },
+  getmatchQuiziz(state) {
+    return state.matchQuiziz;
+  },
+  getQuizResults(state) {
+    return state.QuizResults;
+  },
+  getsingleQuizResult(state) {
+    return state.singleQuizResult;
+  },
 };

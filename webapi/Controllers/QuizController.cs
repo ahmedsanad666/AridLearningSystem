@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -52,7 +53,7 @@ namespace webapi.Controllers
                 point = m.Point,
                 time = m.Time
             })
-.ToList();
+            .ToList();
 
             foreach(var el in combinedData) {
                 var id = el.customId;
@@ -82,7 +83,38 @@ namespace webapi.Controllers
 
             return data;
         }
+
+
+
+
+
+
+
+
+        // get quiziz list by its type [
         [HttpGet]
+        [Route("allMatchQuiziz")]
+        public async Task<ActionResult<Quiz>> allMatchQuizi()
+        {
+            var Quizis = _context.Quizzes.Where(u => u.Type == "match").ToList();
+
+            foreach(var quiz in Quizis)
+            {
+                var fileName = "quiz" +quiz.Id +".png";
+
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "imgs", fileName);
+                quiz.ImgByte = System.IO.File.ReadAllBytes(path);
+
+            }
+            
+
+            return Ok(Quizis);
+
+        }
+
+
+
+            [HttpGet]
         [Route("MultipleQuiz")]
         public async Task<ActionResult<object>> GetMultiPleQuizis()
         {
@@ -342,6 +374,48 @@ namespace webapi.Controllers
             }
         }
 
+
+
+
+
+        [HttpPost]
+        [Route("AddQuizResult")]
+       
+        public async Task<ActionResult<List<QuizResult>>> AddQuizResult([FromBody] QuizResult result)
+        {
+            try
+            {
+                _context.QuizResults.Add(result);
+                await _context.SaveChangesAsync();
+                var allResults =  _context.QuizResults.Where(u =>u.QuizId == result.QuizId).Include(u => u.ApiUser).Include(q => q.Quiz).ToList();
+
+                return allResults;
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                return StatusCode(500, ex.Message);
+            }
+        }
+      
+        
+        [HttpGet("done/{id}")]
+        public async Task<ActionResult<List<QuizResult>>> singleResult(int id)
+        {
+            var data = await _context.QuizResults.Include(u => u.ApiUser).Include(q => q.Quiz).Where(u => u.QuizId == id).ToListAsync();          
+
+
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return data;
+        }
+
     }
-   
+
 }
