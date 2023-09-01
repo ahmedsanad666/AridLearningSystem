@@ -28,7 +28,8 @@
   <section v-else-if="currentMood === 'TokenQuiz'">
     <h1 class="text-center py-3 font-bold lg:text-3xl md:text-2xl text-xl">
       already Token
-    </h1>    <base-spinner v-if="isLoading"></base-spinner>
+    </h1>
+    <base-spinner v-if="isLoading"></base-spinner>
     <div
       v-else
       class="resultBox m-auto rounded-lg my-5 lg:w-[25%] md:w-[50%] w-[60%] border"
@@ -113,7 +114,7 @@ export default {
       QCounter: 0,
       answers: [],
       totalPoints: 0,
-      currentMood:'',
+      currentMood: "",
       counter: 0,
       QuizResults: [],
       isLoading: false,
@@ -186,7 +187,6 @@ export default {
 
       if (rightAns === currentChoice) {
         this.answers.push(true);
-        this.totalPoints = this.totalPoints + this.currentQuestoin.point;
 
         // this.$emit("RightAnswer");
       } else {
@@ -246,7 +246,7 @@ export default {
         return;
       }
 
-     this.allQ = Object.values(this.allQ);
+      this.allQ = Object.values(this.allQ);
 
       this.currentQuestoin = this.allQ[this.QCounter];
       const data = {
@@ -269,7 +269,7 @@ export default {
           }, 1000);
         } else {
           this.$emit("RightAnswer");
-
+          this.totalPoints = this.totalPoints + this.currentQuestoin.point;
           setTimeout(() => {
             this.nextQ();
 

@@ -16,3 +16,8 @@ img {
 .custom-grid {
   @apply grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 text-center;
 }
+.desc{
+  white-space: normal;
+  overflow: visible;
+  word-wrap: break-word;
+}

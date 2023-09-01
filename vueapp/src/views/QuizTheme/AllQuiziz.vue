@@ -1,7 +1,9 @@
 <template>
   <section class="min-h-screen py-4">
     <div v-if="noQuiziz">
-      <h1>لم يتم اضافةاى اختبار</h1>
+      <h1 class="md:text-3xl text-2xl text-center py-4 my-4 font-bold">
+        لم يتم اضافة اختبارات بعد
+      </h1>
     </div>
     <div
       v-else
@@ -34,21 +36,22 @@
           <div class="des h-1/2 bg-gray-200 py-4 px-3">
             <h3 class="px-4 text-lg font-bold">الوصف</h3>
             <hr class="my-2 text-zinc-500 m-auto" />
-            <p class="max-w-2xl px-3 py-2">
+            <p class="max-w-2xl px-3 py-2  desc ">
               {{ quiz.description }}
             </p>
           </div>
         </router-link>
         <div class="z-50 top-0 py-2 left-0 w-full px-4" v-if="isLoggedIn">
-          <div class="flex justify-between">
+          <div class="flex justify-between  ">
             <router-link
-              class="px-3 py-1 rounded-md bg-slate-800 text-white"
+              class="px-3 py-1 rounded-md bg-slate-800 text-white  "
               :to="`/CreateQuestion/${quiz.id}/${quiz.type}`"
               >عرض الاسئلة</router-link
             >
             <router-link
+
               :to="`/AddQuestion/${quiz.id}/${quiz.type}`"
-              class="border-red-500 -z-50 cursor-pointer"
+              class="px-3 py-1 rounded-md    "
             >
               <font-awesome-icon
                 :icon="['fas', 'plus']"
@@ -64,14 +67,13 @@
 </template>
 
 <script>
-import { compileScript } from "vue/compiler-sfc";
 export default {
   data() {
     return {
       isLoading: false,
       type: "",
       allQuiziz: [],
-      noQuiziz:false,
+      noQuiziz: false,
       error: "",
     };
   },
@@ -79,30 +81,27 @@ export default {
     isLoggedIn() {
       return this.$store.getters["auth/isAuthenticated"];
     },
- 
-    
+
     QuizType() {
       return this.$route.params.QuizType;
     },
   },
   methods: {
     async GetQuiziz() {
-      
       const QuizType = this.$route.params.QuizType;
       this.isLoading = true;
       try {
         if (QuizType === "match") {
           await this.$store.dispatch("Quiz/allmatchQuiziz");
           this.allQuiziz = this.$store.getters["Quiz/getmatchQuiziz"];
-          console.log(this.allQuiziz);
         } else {
           await this.$store.dispatch("Quiz/MultipleQuizis", QuizType);
           this.allQuiziz = this.$store.getters["Quiz/getmultipleQuiziz"].quizis;
-          if(this.allQuiziz.length === 0){
-            this.noQuiziz = true;
-          }else{
-            this.noQuiziz = false;
-          }
+        }
+        if (this.allQuiziz.length === 0) {
+          this.noQuiziz = true;
+        } else {
+          this.noQuiziz = false;
         }
       } catch (e) {
         this.error = e.message || "failed to get data";
@@ -146,6 +145,12 @@ export default {
     width: 100%;
     background: rgba($color: #000000, $alpha: 0.7);
     z-index: 0;
+  }
+  .desc{
+    white-space: normal;
+    overflow: visible;
+    word-wrap: break-word;
+
   }
 }
 </style>
