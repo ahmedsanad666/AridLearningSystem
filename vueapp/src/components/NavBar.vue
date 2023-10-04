@@ -37,7 +37,9 @@
           <!-- <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link> -->
         </li>
         <li>
-          <router-link :to="{ name: 'quizList' }">قائمة  الاختبارات </router-link>
+          <router-link :to="{ name: 'quizList' }"
+            >قائمة الاختبارات
+          </router-link>
           <!-- <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link> -->
         </li>
       </ul>
@@ -86,6 +88,7 @@
           <router-link :to="{ name: 'home' }"> الرئيسية</router-link>
           <router-link :to="{ name: 'courses' }">الدورات </router-link>
           <router-link :to="{ name: 'Blogs' }">المدونة </router-link>
+          <!-- <router-link :to="{ name: 'Blogs' }">livequiz </router-link> -->
           <div class="cursor-pointer">
             <button v-if="isLoggedIn" @click="logOut()">تسجيل الخروج</button>
             <router-link v-else to="/auth">تسجيل الدخول</router-link>

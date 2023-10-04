@@ -1,0 +1,182 @@
+<template>
+  <section class="min-h-screen">
+    <!-- <div v-if="!admin"> -->
+      <div v-if="!enterQuiz">
+        <input type="text" ref="userNameInput" placeholder=" uer name" />
+        <button @click="registerUser">Submit</button>
+      </div>
+      <div v-else-if="!quizStarted && userName && enterQuiz">
+        <h1 class="text-center text-xl font-bold">user stage</h1>
+        {{ quizStarted }}
+      </div>
+      <div v-else-if="quizStarted && userName">
+        <h1 class="text-center text-xl">stared</h1>
+        {{ quizStarted }}
+      </div>
+    <!-- </div> -->
+
+    <div
+      v-else-if="quizStarted && admin"
+      class="min-h-screen bg-zinc-900 flex justify-center items-center"
+    >
+      <div
+        class="md:w-3/4 rounded-l-lg w-[80%] m-auto quizBlock shadow-md shadow-current px-3"
+      >
+        <div
+          class="text-white text-left lg:text-3xl md:text-2xl text-xl py-4 px-2"
+        >
+          <h2>quiz name</h2>
+        </div>
+        <hr class="text-white" />
+        <div
+          class="flex justify-between px-2 py-4 flex-row-reverse text-white text-2xl"
+        >
+          <span class="w-1/2 text-left px-3"> 0 / 1 </span>
+          <ul class="w-1/2 px-3">
+            <li>Participants view</li>
+          </ul>
+        </div>
+        <hr class="my-3 text-slate-800" />
+        <div class="flex flex-row-reverse px-4 flex-wrap gap-2 py-4">
+          <span
+            v-for="(user, k) in connectedUsers"
+            :key="k"
+            class="w-16 h-16 text-white bg- flex justify-center items-center border rounded-full"
+            >{{ user }}</span
+          >
+        </div>
+      </div>
+    </div>
+    <div v-if="!quizStarted && admin">
+      wating usres
+      <ul v-if="connectedUsers.length > 0">
+        <li v-for="(user, k) in connectedUsers" :key="k">{{ user }}</li>
+      </ul>
+      <button @click="start">start Quiz</button>
+    </div>
+  </section>
+</template>
+
+<script>
+import { HubConnectionBuilder } from "@aspnet/signalr";
+
+export default {
+  data() {
+    return {
+      enterQuiz: false,
+      userName: "",
+      views: 0,
+      users: 0,
+      connection: null,
+      userconnection: null,
+      isLoading: false,
+      quizStarted: false,
+      // connectedUsers: [],
+    };
+  },
+  computed: {
+    admin() {
+      return this.$route.params.role === "user" ? 0 : 1;
+    },
+  },
+
+  methods: {
+    start() {
+      this.connection.send("StartQuiz");
+      console.log("started");
+      this.connection.on("Started", () => {
+        this.quizStarted = true;
+        console.log(this.quizStarted);
+      });
+    },
+    async registerUser() {
+      this.userName = this.$refs.userNameInput.value;
+      // create connection
+
+      this.userconnection = new HubConnectionBuilder()
+        .withUrl("https://localhost:7243/hubs/LiveQuiz")
+        .build();
+
+      //start
+      this.userconnection
+        .start()
+        .then(() => {
+          this.userconnection.invoke("RegisterUser", this.userName, "user");
+          this.enterQuiz = true;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      // Listen for updates on connected users only if this is the admin page
+      this.userconnection.on("UserConnected", (users) => {
+        this.connectedUsers = users;
+      });
+    },
+    test() {
+      console.log("sdf");
+    },
+    async stopSignalRConnection() {
+      if (this.connection) {
+        this.connection.stop();
+        // this.connection = null;
+      }
+    },
+  },
+  watch: {
+    userName(val) {
+      if (this.enterQuiz) {
+        this.startQuiz();
+      }
+    },
+  },
+  async mounted() {
+    this.startQuiz = () => {
+      this.userconnection.on("Started", () => {
+        this.quizStarted = true;
+        console.log(this.quizStarted);
+      });
+    };
+
+    if (this.admin) {
+      // create connection
+
+      this.connection = new HubConnectionBuilder()
+        .withUrl("https://localhost:7243/hubs/LiveQuiz")
+        .build();
+
+      // connect to methods that hub invokes aka receive notifications from hub
+
+      this.connection.on("UserConnected", (users) => {
+        this.connectedUsers = Object.values(users);
+      });
+      this.connection.on("Started", () => {
+        this.quizStarted = true;
+        console.log(this.quizStarted);
+      });
+
+      // invoke hub methods aka send notifications to hub
+
+      // start connection
+      this.connection
+        .start()
+        .then(() => {
+          this.connection.invoke("RegisterUser", "admin", "admin");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.stopSignalRConnection(); // Stop the connection before leaving
+    next(); // Continue with the navigation
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.quizBlock {
+  min-height: 80vh;
+}
+</style>

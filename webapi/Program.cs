@@ -6,6 +6,8 @@ using System.Text;
 using webapi.Data;
 using Microsoft.AspNetCore.Identity;
 using webapi.Models;
+using webapi.Hubs;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +28,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: myAllowOrigins, policy =>
     {
-        policy.WithOrigins("https://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+        policy.WithOrigins("https://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
 });
 
@@ -59,7 +61,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+builder.Services.AddSignalR();
+//builder.Services.AddSignalR(options =>
+//{
+//    options.EnableDetailedErrors = true;
+//})
+//.AddHubOptions<UserHub>(options =>
+//{
+//    options.EnableDetailedErrors = true;
+//});
+//....................
 
 
 var app = builder.Build();
@@ -76,6 +87,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseCors(myAllowOrigins);
-app.MapControllers();
+app.MapHub<UserHub>("/hubs/userCount");
+app.MapHub<LiveQuizHub>("/hubs/LiveQuiz");
 
+
+app.MapControllers();
+ 
 app.Run();

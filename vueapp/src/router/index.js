@@ -30,6 +30,13 @@ import AddQuiz from "../views/QuizAdmin/AddQuiz.vue";
 import CreateQuestion from "../views/QuizAdmin/CreateQuestion.vue";
 import AddQuestion from "../views/QuizAdmin/AddQuesiton.vue";
 
+// live quiz
+import LiveQuiz from "../views/LiveQuiz/LiveQuiz.vue";
+import QuizLink from "@/views/LiveQuiz/QuizLink.vue";
+import AdminQuiz from '../views/LiveQuiz/AdminQuiz.vue'
+
+
+
 const routes = [
   {
     path: "/",
@@ -244,6 +251,31 @@ const routes = [
     name: "AddQuestion",
     meta: {
       title: "AddQuestion",
+    },
+  },
+  // live quiz
+  {
+    path: "/liveQuiz/:quizId/:presentationId",
+    component: LiveQuiz,
+    name: "liveQuiz",
+    meta: {
+      title: "liveQuiz",
+    },
+  },
+  {
+    path: "/QuizLink/:quizId",
+    component: QuizLink,
+    name: "QuizLink",
+    meta: {
+      title: "QuizLink",
+    },
+  },
+  {
+    path: "/presentation/:quizId",
+    component: AdminQuiz,
+    name: "presentation",
+    meta: {
+      title: "presentation",
     },
   },
 ];

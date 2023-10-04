@@ -20,6 +20,7 @@
         v-for="(quiz, k) in allQuiziz"
         :key="k"
       >
+    
         <div
           class="quizPic h-1/2 bg-gray-300 font-body text-white rounded-t-lg"
           :style="'background-image: url(data:image/png;base64,' + quiz.imgByte"
@@ -36,22 +37,24 @@
           <div class="des h-1/2 bg-gray-200 py-4 px-3">
             <h3 class="px-4 text-lg font-bold">الوصف</h3>
             <hr class="my-2 text-zinc-500 m-auto" />
-            <p class="max-w-2xl px-3 py-2  desc ">
+            <p class="max-w-2xl px-3 py-2 desc">
               {{ quiz.description }}
             </p>
           </div>
         </router-link>
-        <div class="z-50 top-0 py-2 left-0 w-full px-4" v-if="isLoggedIn">
-          <div class="flex justify-between  ">
+        <div
+          class="z-50 top-0 py-2 left-0 w-full px-4 flex flex-col space-y-2"
+          v-if="isLoggedIn"
+        >
+          <div class="flex justify-between">
             <router-link
-              class="px-3 py-1 rounded-md bg-slate-800 text-white  "
+              class="px-3 py-1 rounded-md bg-slate-800 text-white"
               :to="`/CreateQuestion/${quiz.id}/${quiz.type}`"
               >عرض الاسئلة</router-link
             >
             <router-link
-
               :to="`/AddQuestion/${quiz.id}/${quiz.type}`"
-              class="px-3 py-1 rounded-md    "
+              class="px-3 py-1 rounded-md"
             >
               <font-awesome-icon
                 :icon="['fas', 'plus']"
@@ -60,6 +63,13 @@
               />
             </router-link>
           </div>
+
+          <router-link
+          v-if="quiz.type === 'multipleChoices'"
+            class="py-1 w-full text-center rounded-md bg-green-700 text-white my-2"
+            :to="`/QuizLink/${quiz.id}`"
+            >Live Quiz</router-link
+          >
         </div>
       </div>
     </div>
@@ -146,11 +156,10 @@ export default {
     background: rgba($color: #000000, $alpha: 0.7);
     z-index: 0;
   }
-  .desc{
+  .desc {
     white-space: normal;
     overflow: visible;
     word-wrap: break-word;
-
   }
 }
 </style>

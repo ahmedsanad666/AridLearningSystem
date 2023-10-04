@@ -7,7 +7,6 @@
 
   <!-- sesstions -->
   <our-sessions />
-
 </template>
 
 <script>
@@ -22,7 +21,10 @@ export default {
     OurServices,
     OurSessions,
   },
- 
+  data() {
+    return { };
+  },
+  
 };
 </script>
 
