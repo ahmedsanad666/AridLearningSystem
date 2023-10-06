@@ -21,7 +21,7 @@
           @submit.prevent="SubmitQuiz"
           class="py-4 px-2 w-[90%] my-4 m-auto grid grid-cols-2"
         >
-          <div class="form-control">
+          <div class="Type">
             <label for="">النوع</label>
             <input v-model.trim="QuizType" disabled type="text" />
           </div>
@@ -45,10 +45,15 @@
               required=""
             />
           </div>
-          <div class="justify-center items-center flex flex-row py-3  ">
-            <input ref="fileInput" type="file" @change="uploadImage" class="w-1/2 mx-3" />
+          <div class="justify-center items-center flex flex-row py-3">
+            <input
+              ref="fileInput"
+              type="file"
+              @change="uploadImage"
+              class="w-1/2 mx-3"
+            />
             <div v-if="imageUrl">
-              <img :src="imageUrl" alt="uploaded image"  class=" rounded-md"/>
+              <img :src="imageUrl" alt="uploaded image" class="rounded-md" />
             </div>
           </div>
           <div class="form-control col-span-2">
@@ -108,6 +113,7 @@ export default {
         alert("slect an image");
         return;
       }
+      const userId = this.$store.getters["auth/userId"];
       // const payload = {
       //   type: this.QuizType,
       //   name: this.name,
@@ -120,6 +126,7 @@ export default {
       data.append("name", this.name);
       data.append("subject", this.subject);
       data.append("description", this.description);
+      data.append("apiUserId", userId);
 
       this.isLoading = true;
       try {
@@ -156,6 +163,9 @@ export default {
     outline: none;
     border: none;
   }
+}
+.Type {
+  display: none;
 }
 section {
   position: absolute;

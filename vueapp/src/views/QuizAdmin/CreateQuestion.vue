@@ -1,6 +1,38 @@
 <template>
-  <section class="min-h-screen py-4 bg-slate-50">
-    <div class="md:w-1/2 w-3/4 px-4 py-3 m-auto min-h-screen">
+  <section
+    class="min-h-screen py-4l flex md:flex-row flex-col bg-slate-50 gap-8"
+  >
+    <div
+      class="md:w-[35%] w-[95%] mt-4 m-auto md:m-0 shadow-lg shadow-current flex flex-col gap-4"
+    >
+      <div class="px-3 py-4 h-[40vh]">
+        <img
+          class="w-full h-full rounded-lg object-cover"
+          :src="`data:image/png;base64,${QuizData.imgByte}`"
+          alt=""
+        />
+      </div>
+      <div class="px-5">
+        <h2><span>العنوان : </span> {{ QuizData.name }}</h2>
+        <p class="my-4 px-3 break-words">
+          <span class="inline-block w-full">الوصف</span>
+
+          {{ QuizData.description }}
+        </p>
+      </div>
+      <div class="px-5 flex flex-col gap-4">
+        <div><span>التاريخ : </span> {{ QuizData.createdDate }}</div>
+        <div><span v-if="user"> بواسطة : </span> {{ user }}</div>
+      </div>
+      <div class="px-5 my-4">
+        <router-link
+          :to="`/AllQuiziz/${QuizLink}`"
+          class="py-1 rounded-md bg-[#27ae60] px-10 text-white"
+          >نشر
+        </router-link>
+      </div>
+    </div>
+    <div class="md:w-1/2 w-3/4 px-4 py-3 min-h-screen md:m-0 m-auto">
       <h1 class="py-3 my-4">{{ QuizData.name }}</h1>
       <div class="flex items-center">
         <router-link
@@ -78,6 +110,7 @@ export default {
   data() {
     return {
       QuizData: [],
+      user: "",
     };
   },
 
@@ -86,6 +119,17 @@ export default {
       const quizId = this.$route.params.QuizId;
       const Type = this.$route.params.QuizType;
       return { quizId, Type };
+    },
+    QuizLink() {
+      if (this.QuizData.type === "multipleChoices") {
+        return "MultipleQuiz";
+      } else if (this.QuizData.type === "fillTheBlank") {
+        return "fillTheBlank";
+      } else if (this.QuizData.type === "DragDrop") {
+        return "DragDrop";
+      } else {
+        return "match";
+      }
     },
   },
   methods: {
@@ -96,16 +140,11 @@ export default {
         (q) => q.id === quizId
       );
 
-      console.log(this.QuizData);
-
-      // this.QuizData = data.map((el) => {
-      //   el.Questions = el.Questions.map((ul) => {
-      //     return {
-      //       ...ul,
-      //       choices: [...ul.choices],
-      //     };
-      //   });
-      // });
+      const dateTimeString = this.QuizData.createdDate;
+      this.QuizData.createdDate = new Date(dateTimeString)
+        .toISOString()
+        .split("T")[0];
+      this.user = this.QuizData.apiUser.email;
     },
   },
   created() {

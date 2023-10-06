@@ -26,7 +26,7 @@ namespace webapi.Controllers
         [HttpGet]
         public async Task<ActionResult<object>> GetQuizis()
         {
-            var Quizis = _context.Quizzes.ToList();
+            var Quizis = _context.Quizzes.Include(q => q.ApiUser).ToList();
             foreach (var quiz in Quizis)
             {
                 string fileName = "quiz" + quiz.Id + ".png";

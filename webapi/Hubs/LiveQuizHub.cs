@@ -11,13 +11,14 @@ namespace webapi.Hubs
         private static readonly List<UserAnswer> UserAnswers = new List<UserAnswer>();
 
 
-        public async Task SubmitAnswer(string userName, string answer,string RightAnsNum)
+        public async Task SubmitAnswer(string userName, string answer,string RightAnsNum ,string TotalTime )
         {
             var userAnswer = new UserAnswer
             {
                 UserName = userName,
                 Answer = answer,
-                RightAnsNum = RightAnsNum
+                RightAnsNum = RightAnsNum,
+                TotalTime = TotalTime
             };
 
             UserAnswers.Add(userAnswer);

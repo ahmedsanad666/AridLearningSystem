@@ -70,7 +70,13 @@
       </div>
       <div class="border bg-[#1c1c23] w-full">
         <div class="w-[80%] m-auto px-4 py-4 rounded-lg my-1 bg-[#14141b]">
-          <button v-if="endQuiz" @click="showResult"  class="bg-[#ccc] text-black px-5 py-1 rounded-lg">انهاء الاختبار</button>
+          <button
+            v-if="endQuiz"
+            @click="showResult"
+            class="bg-[#ccc] text-black px-5 py-1 rounded-lg"
+          >
+            انهاء الاختبار
+          </button>
           <button
             v-else
             class="bg-[#ccc] text-black px-5 py-1 rounded-lg"
@@ -85,26 +91,34 @@
       v-if="Result"
       class="rounded-xl flex flex-col py-4 border-white md:w-[50%] m-auto w-3/4 h-[75vh]"
     >
-      <h1 class="text-white text-center py-5 md:text-3xl text-2xl tracking-wider ">
+      <h1
+        class="text-white text-center py-5 md:text-3xl text-2xl tracking-wider"
+      >
         Result
       </h1>
       <ul
-        class="commentSec h-[80%] w-full md:w-3/4 m-auto space-y-3"
+        class="commentSec h-[80%] w-full md:w-3/4 m-auto space-y-7"
         v-if="connectedUsers.length > 0"
       >
         <li
-          class="py-2 font-bold tracking-wider shadow-lg text-red-950 px-4 rounded-md bg-white flex  justify-between "
+          class="py-2 relative font-bold tracking-wider shadow-lg text-red-950 px-4 rounded-md bg-white flex justify-between"
           v-for="(user, k) in userAnswers"
           :key="k"
         >
-        <span>
-        
-        Right Answers :   {{ user.rightAnsNum  }}
-        </span>
-        <span>
+          <div
+            class="text-white top-[-23px] text-left absolute speed px-4 text-sm left-0"
+          >
+            Answer Speed
+          </div>
+          <div
+            class="absolute h-[2px] top-0 bg-red-700 left-1"
+            :style="{ width: progress(user.totalTime) + '%' }"
+          ></div>
+          <span> Right Answers : {{ user.rightAnsNum }} </span>
 
-          {{ user.userName }}
-        </span>
+          <span>
+            {{ user.userName }}
+          </span>
         </li>
       </ul>
     </div>
@@ -130,6 +144,20 @@ export default {
   },
   computed: {},
   methods: {
+    progress(value) {
+      console.log(value);
+      const arr = [];
+      this.userAnswers.forEach((el) => {
+        arr.push(parseInt(el.totalTime));
+      });
+      let baseNum = Math.max(...arr);
+
+      baseNum = baseNum + baseNum * 0.25;
+      console.log(parseInt(value));
+      const prog = (parseInt(value) / baseNum) * 100;
+      console.log(prog);
+      return prog;
+    },
     showResult() {
       this.Result = true;
       this.connection.send("EndQuiz");
@@ -166,7 +194,7 @@ export default {
     NextQuestoin() {
       if (this.currentQuestion >= this.Qnumber) {
         this.endQuiz = true;
-       
+
         return;
       }
       if (this.currentQuestion === this.Qnumber - 2) {
@@ -210,8 +238,14 @@ export default {
     });
 
     this.connection.on("UpdateUserAnswer", (data) => {
-      this.userAnswers = data;
-      console.log(data);
+      const newData = data.map((item) => ({
+        ...item,
+        rightAnsNum: parseInt(item.rightAnsNum),
+      }));
+      this.userAnswers =  newData.slice().sort(
+          (a, b) => b.rightAnsNum - a.rightAnsNum
+        );
+      console.log(this.userAnswers);
     });
     // invoke hub methods aka send notifications to hub
 

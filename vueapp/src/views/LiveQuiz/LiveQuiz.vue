@@ -1,7 +1,7 @@
 <template>
   <section class="min-h-screen bg-slate-950">
-    <div v-if="!enterQuiz" class="min-h-screen py-40 ">
-      <div class=" m-auto bg-slate-800  md:w-1/3 h-[10vh] py-4 px-5 rounded-lg">
+    <div v-if="!enterQuiz" class="min-h-screen py-40">
+      <div class="m-auto bg-slate-800 md:w-1/3 h-[10vh] py-4 px-5 rounded-lg">
         <input
           type="text"
           class="py-1 px-4 mx-3 rounded-md"
@@ -17,8 +17,16 @@
       </div>
     </div>
     <div v-else-if="!quizStarted && enterQuiz">
-      <h1 class="text-center text-xl font-bold text-white py-6 md:text-3xl tracking-wider">الرجاء انتظار حتى يبدا الاختبار </h1>  
-      <h1 class="text-center text-xl font-bold text-white py-2 md:text-3xl tracking-wider">...............................   </h1>  
+      <h1
+        class="text-center text-xl font-bold text-white py-6 md:text-3xl tracking-wider"
+      >
+        الرجاء انتظار حتى يبدا الاختبار
+      </h1>
+      <h1
+        class="text-center text-xl font-bold text-white py-2 md:text-3xl tracking-wider"
+      >
+        ...............................
+      </h1>
 
       {{ quizStarted }}
     </div>
@@ -153,6 +161,7 @@ export default {
       rank: 0,
       currentQuestionTime: 0, // Example time in seconds for the current question
       totalTimeForQuestion: 0, // Example total time in seconds for the question
+      userStoppedTime: 0,
       progressWidth: 100, // Initial progress width in percentage
       ///............
       userconnection: null,
@@ -184,7 +193,13 @@ export default {
         } else {
           clearInterval(interval);
         }
+        if (this.userStoppedTime > 0) {
+          clearInterval(interval);
+        }
       }, 1000);
+    },
+    stopQuestionTimer() {
+      this.userStoppedTime = this.userStoppedTime +  this.currentQuestionTime;
     },
     removeCheck() {
       this.$refs.quizFooter.removeCheck();
@@ -192,22 +207,21 @@ export default {
     },
     RightAnswer() {
       this.$refs.quizFooter.RightAns();
-      this.submitAnswer("right");
       this.RightAnsNum++;
-      console.log(this.userName);
+      this.submitAnswer("right");
     },
     WrongAns() {
       this.$refs.quizFooter.WrongAns();
       this.submitAnswer("wrong");
-      console.log(this.userName);
     },
 
     submitAnswer(answer) {
-      console.log(this.userconnection);
+      this.stopQuestionTimer();
+      console.log(this.userStoppedTime);
       const userName = this.userName;
       const rightAnsNum = this.RightAnsNum + "";
-      console.log(rightAnsNum, typeof rightAnsNum);
-      this.userconnection.invoke("SubmitAnswer", userName, answer, rightAnsNum);
+      this.userconnection.invoke("SubmitAnswer", userName, answer, rightAnsNum,this.userStoppedTime.toString());
+
     },
     checkEmptyObj(obj) {
       for (let key in obj) {

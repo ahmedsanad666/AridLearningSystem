@@ -5,13 +5,12 @@
     </h1>
     <div class="container py-3 px-4">
       <ul class="md:w-[50%] w-[90%] m-auto shadow-xl rounded-l-lg space-y-4">
-       
         <li
           class="flex rounded-lg py-3 px-2 justify-between items-center"
           v-for="(item, k) in newData"
           :key="k"
         >
-          <span>{{ k}} | {{ item.apiUser.userName  }}</span>
+          <span>{{ k }} | {{ item.apiUser.userName }}</span>
           <span>{{ item.userPoints }}</span>
           <!-- <div >
                 <img :src="`data:image/jpeg;base64,${item.imgByte}`"  />
@@ -34,22 +33,20 @@ export default {
     async usersPoints() {
       try {
         await this.$store.dispatch("courses/userCourses");
-        await this.$store.dispatch('students/AllUsers')
+        await this.$store.dispatch("students/AllUsers");
         this.UsersData = this.$store.getters["courses/UserCourses"];
 
         const users = this.$store.getters["students/allUsers"];
 
-      
         this.newData = this.UsersData.slice().sort(
           (a, b) => b.userPoints - a.userPoints
         );
 
-  //  this.newData = this.newData.map((e) => {
-  //         const user = users.find((user) => user.id == e.userId);
-  //         return { ...e, ...user };
-  //       });
+        //  this.newData = this.newData.map((e) => {
+        //         const user = users.find((user) => user.id == e.userId);
+        //         return { ...e, ...user };
+        //       });
         console.log(this.newData);
-        
       } catch (e) {
         console.log(e);
       }
@@ -67,7 +64,7 @@ li:nth-child(odd) {
   background: #444654;
   color: #ecf0f1;
 }
-img{
-  width:45px;
+img {
+  width: 45px;
 }
 </style>

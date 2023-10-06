@@ -12,6 +12,12 @@ public class Quiz
         public string Name { get; set; }
         public string Subject { get; set; }
           public string Description { get; set; }
+
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+    public string ApiUserId { get; set; }
+    public ApiUser ApiUser { get; set; }
+
     [NotMapped]
     public IFormFile Files { get; set; }
 
