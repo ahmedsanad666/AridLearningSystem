@@ -32,7 +32,7 @@
         <li>
           <router-link :to="{ name: 'Blogs' }">المدونة </router-link>
         </li>
-        <li>
+        <li v-if="isLoggedIn && isAdmin" >
           <router-link :to="{ name: 'AddQuiz' }">اضافة اختبار </router-link>
           <!-- <router-link :to="{ name: 'QuizTheme' }">quizTheme </router-link> -->
         </li>

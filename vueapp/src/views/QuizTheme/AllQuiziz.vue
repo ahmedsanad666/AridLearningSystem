@@ -33,7 +33,7 @@
           </div>
           <div class="overlay rounded-t-lg"></div>
         </div>
-        <router-link :to="`/quizTheme/${quiz.id}`">
+        <router-link :to="`/quizTheme/${quiz.id}`" v-if="isLoggedIn">
           <div class="des h-1/2 bg-gray-200 py-4 px-3">
             <h3 class="px-4 text-lg font-bold">الوصف</h3>
             <hr class="my-2 text-zinc-500 m-auto" />
@@ -42,9 +42,16 @@
             </p>
           </div>
         </router-link>
+        <div class="des h-1/2 bg-gray-200 py-4 px-3" v-else>
+            <h3 class="px-4 text-lg font-bold">الوصف</h3>
+            <hr class="my-2 text-zinc-500 m-auto" />
+            <p class="max-w-2xl px-3 py-2 desc">
+              {{ quiz.description }}
+            </p>
+          </div>
         <div
           class="z-50 top-0 py-2 left-0 w-full px-4 flex flex-col space-y-2"
-          v-if="isLoggedIn"
+          v-if="isLoggedIn && isAdmin"
         >
           <div class="flex justify-between">
             <router-link
@@ -88,6 +95,9 @@ export default {
     };
   },
   computed: {
+    isAdmin() {
+      return this.$store.getters["auth/isAdmin"];
+    },
     isLoggedIn() {
       return this.$store.getters["auth/isAuthenticated"];
     },

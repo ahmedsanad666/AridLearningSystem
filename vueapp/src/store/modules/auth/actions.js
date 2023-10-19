@@ -6,8 +6,8 @@ export default {
         const url = "https://localhost:7243/Arid/auth/register";
         const userData = {
 
-            arName : payload.firstName,
-            enName : payload.lastName,
+            arName : payload.arName,
+            enName : payload.enName,
             userName : payload.userName,
             email : payload.email,
             // role : payload.role,

@@ -349,6 +349,8 @@ export default {
         // role: this.role.val,
         password: this.password.val,
       };
+      console.log(userData);
+      console.log(JSON.stringify(userData));
 this.isLoding = true;
       try{
         console.log(userData);
