@@ -141,7 +141,7 @@
           await this.$store.dispatch("courses/deletechapter", id);
           await this.$store.dispatch("courses/AllCourses");
           this.allChapters = this.$store.getters["courses/CoureChapters"].filter(el => el.courseId == courseId);
-          location.reload();
+          this.loadChapters();
         } catch (e) {
           this.error = e.message || "failed to delete";
         }
@@ -201,11 +201,15 @@
             await this.$store.dispatch("courses/UpdateChapter", payload);
           }
   
+         await this.loadChapters();
+        this.hidden = true;
+        
         } catch (e) {
           this.error = e.message || "failed to update";
         }
         this.isLoading = false;
-       location.reload();
+      //  location.reload();
+
       },
     },
   

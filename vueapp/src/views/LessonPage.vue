@@ -407,7 +407,7 @@ export default {
       this.$router.go(-1);
     },
     async getAllSlides() {
-      let lessonId = this.$route.params.lessonId;
+      let lessonId = this.$route.params.lessonId;   
       try {
         await this.$store.dispatch("courses/LoadLessons");
         await this.$store.dispatch("courses/SlideComments");

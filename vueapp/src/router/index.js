@@ -20,6 +20,7 @@ import SingleBlog from "../views/Blog/SingleBlog.vue";
 import AddBlog from "../views/Blog/AddBlog.vue";
 import store from "@/store";
 import NotFound from "../views/NotFound.vue";
+import LessonSlides from "../views/Admin/LessonSlides.vue";
 // ..............................
 // quiz theme
 import QuizTheme from "../views/QuizTheme/QuizTheme.vue";
@@ -111,6 +112,15 @@ const routes = [
     component: ManageSlides,
     meta: {
       title: "Manage slides",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/Admin/Lessons/allSlides/:lessonId",
+    name: "allSlides",
+    component: LessonSlides,
+    meta: {
+      title: "allSlides",
       requiresAuth: true,
     },
   },

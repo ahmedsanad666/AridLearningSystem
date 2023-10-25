@@ -1,7 +1,7 @@
 <template>
   <section class="min-h-screen">
     <h1 class="my-4 py-2 font-bold md:text-3xl text-2xl text-center">
-     اضافة دورات
+      اضافة دورات
     </h1>
 
     <base-spinner v-if="isLoading"></base-spinner>
@@ -11,7 +11,7 @@
           @click="addNew()"
           class="my-3 py-2 px-4 bg-slate-900 text-white"
         >
-        اضافة
+          اضافة
         </button>
       </div>
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -26,7 +26,7 @@
               <th scope="col" class="px-6 py-3 text-start">الوصف</th>
               <th scope="col" class="px-6 py-3">تاريخ</th>
               <th scope="col" class="px-6 py-3">اخر تحيث</th>
-              <th scope="col" class="px-6 py-3  text-center">التحكم</th>
+              <th scope="col" class="px-6 py-3 text-center">التحكم</th>
             </tr>
           </thead>
           <tbody>
@@ -53,12 +53,13 @@
                 >
                   تعديل
                 </button>
-             
-                <router-link  class=" py-2 px-4 rounded-md bg-amber-800 border" :to="`/Admin/${el.id}`">
-                 اضافة فصول
+
+                <router-link
+                  class="py-2 px-4 rounded-md bg-amber-800 border"
+                  :to="`/Admin/${el.id}`"
+                >
+                  اضافة فصول
                 </router-link>
-          
-                
               </td>
             </tr>
           </tbody>
@@ -69,7 +70,9 @@
     <!-- ................... add new section -->
 
     <div class="container md:w-1/2 w-3/4" v-if="!hidden">
-      <h1 class="md:text-3xl text-3xl text-center">{{ AddNewMood ? 'اضافة كورس جديد':"تعديل " }} </h1>
+      <h1 class="md:text-3xl text-3xl text-center">
+        {{ AddNewMood ? "اضافة كورس جديد" : "تعديل " }}
+      </h1>
       <form @submit.prevent="submitData">
         <div class="form-control">
           <label for="name">العنوان</label>
@@ -103,7 +106,7 @@
 
         <p v-if="!formIsValid">لا تترك مدخلات فارغه.</p>
         <button class="py-2 px-4 rounded-md bg-neutral-700 md:mx-1">
-         ارسال
+          ارسال
         </button>
       </form>
     </div>
@@ -111,7 +114,7 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 export default {
   data() {
     return {
@@ -137,26 +140,22 @@ export default {
 
       try {
         await this.$store.dispatch("courses/AllCourses");
-        this.allCourses= this.$store.getters["courses/allCourses"];
-       this.allCourses = this.allCourses.map(el =>{
+        this.allCourses = this.$store.getters["courses/allCourses"];
+        this.allCourses = this.allCourses.map((el) => {
+          const dateObj = dayjs(el.CreatedDate);
+          const Date = dateObj.format("ddd MMM");
+          const update = dayjs(el.updatedDate);
+          const updateD = update.format("ddd MMM");
 
-        const dateObj = dayjs(el.CreatedDate);
-            const Date = dateObj.format('ddd MMM');
-        const update = dayjs(el.updatedDate);
-            const updateD = update.format('ddd MMM');
+          {
+            return {
+              ...el,
 
-
-            {
-              return{
-                ...el,
-                
-                Date,
-                updateD
-              }
-            }
-
-       })
-
+              Date,
+              updateD,
+            };
+          }
+        });
       } catch (e) {
         this.Error = "failed to Get Courses" || e.message;
       }
@@ -195,19 +194,16 @@ export default {
       }
 
       this.isLoading = true;
-      let payload ;
-      if(this.AddNewMood){
-
-         payload = {
-  
+      let payload;
+      if (this.AddNewMood) {
+        payload = {
           name: this.updateCourseData.name,
           description: this.updateCourseData.description,
           isActive: this.updateCourseData.isActive,
           isFeatured: this.updateCourseData.isFeatured,
         };
-      }else{
-
-         payload = {
+      } else {
+        payload = {
           id: this.courseId,
           name: this.updateCourseData.name,
           description: this.updateCourseData.description,
@@ -222,8 +218,10 @@ export default {
           await this.$store.dispatch("courses/UpdateCourse", payload);
         }
 
-          location.reload();
-
+        // location.reload();
+        await this.loadCourses();
+        this.hidden = true;
+      
       } catch (e) {
         this.error = e.message || "failed to update";
       }
@@ -268,11 +266,11 @@ textarea:focus {
   background-color: #faf6ff;
   outline: none;
 }
-.des{
+.des {
   text-align: right;
   max-width: 13em;
   overflow: hidden;
-  white-space:nowrap;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 </style>

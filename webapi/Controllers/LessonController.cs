@@ -139,7 +139,7 @@ namespace webapi.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GelSlides",  Slides);
+            return CreatedAtAction(nameof(PostSlides),  Slides);
         }
         // DELETE: api/Lessons/5
         [HttpDelete("{id}")]
