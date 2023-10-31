@@ -135,6 +135,7 @@ import QuizFooter from "@/components/LiveQuiz/QuizFooter.vue";
 import FillBlank from "@/components/LiveQuiz/FillBlank.vue";
 import DragDrop from "@/components/LiveQuiz/DragDrop.vue";
 import QuizMatch from "@/components/LiveQuiz/QuizMatch.vue";
+import { ApiOriginUrl } from "@/store/index";
 export default {
   components: {
     FillBlank,
@@ -199,7 +200,7 @@ export default {
       }, 1000);
     },
     stopQuestionTimer() {
-      this.userStoppedTime = this.userStoppedTime +  this.currentQuestionTime;
+      this.userStoppedTime = this.userStoppedTime + this.currentQuestionTime;
     },
     removeCheck() {
       this.$refs.quizFooter.removeCheck();
@@ -220,8 +221,13 @@ export default {
       console.log(this.userStoppedTime);
       const userName = this.userName;
       const rightAnsNum = this.RightAnsNum + "";
-      this.userconnection.invoke("SubmitAnswer", userName, answer, rightAnsNum,this.userStoppedTime.toString());
-
+      this.userconnection.invoke(
+        "SubmitAnswer",
+        userName,
+        answer,
+        rightAnsNum,
+        this.userStoppedTime.toString()
+      );
     },
     checkEmptyObj(obj) {
       for (let key in obj) {
@@ -266,6 +272,9 @@ export default {
       this.userName = this.$refs.userNameInput.value;
       // create connection
       this.userconnection.invoke("RegisterUser", this.userName, "user");
+      localStorage.setItem("presentationId", this.$route.params.presentationId);
+      localStorage.setItem("userName", this.userName);
+
       this.enterQuiz = true;
       //start
 
@@ -296,17 +305,30 @@ export default {
       }
     },
   },
+  created() {
+    const presentationId = localStorage.getItem("presentationId");
+    const userName = localStorage.getItem("userName");
+    console.log(localStorage.getItem('quizStarted'));
+     this.quizStarted = localStorage.getItem('quizStarted')
+    console.log(this.quizStarted)
+    if (presentationId && userName ) {
+
+      this.userName = userName;
+      this.enterQuiz = true;
+    } 
+  },
   async mounted() {
     // create connection
     this.userconnection = new HubConnectionBuilder()
-      .withUrl("https://localhost:7243/hubs/LiveQuiz")
+      .withUrl(`${ApiOriginUrl}/hubs/LiveQuiz`)
       .build();
 
     this.userconnection.on("Started", (value) => {
       this.quizStarted = value;
-      console.log(this.quizStarted);
+      localStorage.setItem('quizStarted',true)
     });
 
+    
     this.userconnection.on("AlreadyStarted", (val) => {
       this.quizStarted = val;
     });
@@ -316,6 +338,8 @@ export default {
     });
     this.userconnection.on("endQuiz", () => {
       this.endQuiz = true;
+      localStorage.removeItem("presentationId");
+      localStorage.removeItem("userName");
     });
 
     this.userconnection

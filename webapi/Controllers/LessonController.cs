@@ -83,6 +83,45 @@ namespace webapi.Controllers
             return NoContent();
         }
 
+        [HttpPut("editSlide/{id}")]
+        public async Task<IActionResult> EditSlide(int id, Slide updatedSlide)
+        {
+            if (id != updatedSlide.Id)
+            {
+                return BadRequest();
+            }
+
+
+            var existingSlide = await _context.Slides.FindAsync(id);
+
+            if (existingSlide == null)
+            {
+                return NotFound();
+            }
+
+            _context.Entry(existingSlide).CurrentValues.SetValues(updatedSlide);
+            await _context.SaveChangesAsync();
+
+            return Ok(existingSlide);
+        }
+
+        [HttpPut("editQuestion/{id}")]
+        public async Task<IActionResult> EditQ(int id, Question question)
+        {
+            if (id != question.Id)
+            {
+                return BadRequest();
+            }
+            var data = await _context.Question.FindAsync(id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            _context.Entry(data).CurrentValues.SetValues(question);
+            await _context.SaveChangesAsync();
+            return Ok(data);
+
+        }
         // POST: api/Lessons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -140,6 +179,29 @@ namespace webapi.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(PostSlides),  Slides);
+        }
+
+        //............. delete slide
+        [HttpDelete("deleteSlide/{id}")]
+       
+        public async Task<IActionResult> DeleteSlide(int id)
+        {
+
+            var slide = await _context.Slides.FindAsync(id);
+            if(slide == null)
+            {
+                return NotFound();
+            }
+
+            _context.Slides.Remove(slide);
+            var question = await _context.Question.FirstOrDefaultAsync( q => q.SlideId == slide.customId);
+           
+                _context.Question.Remove(question);
+           
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+
         }
         // DELETE: api/Lessons/5
         [HttpDelete("{id}")]

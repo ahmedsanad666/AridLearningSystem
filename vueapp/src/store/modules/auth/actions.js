@@ -1,9 +1,10 @@
-export default {
 
+import {ApiOriginUrl} from '../../index'; 
+export default {
 
     async signUp(context, payload){
 
-        const url = "https://localhost:7243/Arid/auth/register";
+        const url = `${ApiOriginUrl}/Arid/auth/register`;
         const userData = {
 
             arName : payload.arName,
@@ -41,7 +42,7 @@ export default {
     },
     async logIn(context, payload){
 
-        const url = "https://localhost:7243/Arid/auth/LogIn";
+        const url = `${ApiOriginUrl}/Arid/auth/LogIn`;
         const userData = {
 
          
@@ -78,6 +79,7 @@ export default {
     },
 
     tryLogin(context) {
+    
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
         const role = localStorage.getItem('role');

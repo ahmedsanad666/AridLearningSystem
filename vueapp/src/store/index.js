@@ -30,5 +30,6 @@ const store = createStore({
   },
 
 });
-
+export const ApiOriginUrl = 'https://localhost:7243';
+export const BaseUrl  = `${ApiOriginUrl}/arid/Quiz`;
 export default store;

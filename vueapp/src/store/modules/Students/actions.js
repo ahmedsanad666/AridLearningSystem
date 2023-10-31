@@ -1,6 +1,8 @@
+
+import { ApiOriginUrl } from "@/store";
 export default {
     async AllUsers(context ){
-        const response = await fetch("https://localhost:7243/arid/auth/getallusers");
+        const response = await fetch(`${ApiOriginUrl}/arid/auth/getallusers`);
           const responseData = await response.json();
         
           if (!response.ok) {
@@ -37,7 +39,7 @@ export default {
           //   'Content-Type': 'application/json'
           // };
     
-          const response = await fetch(`https://localhost:7243/arid/auth/updateuser`,
+          const response = await fetch(`${ApiOriginUrl}/arid/auth/updateuser`,
           {
             method:'POST',  
             // headers,

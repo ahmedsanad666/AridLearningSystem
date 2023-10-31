@@ -155,7 +155,7 @@ export default {
         const results = this.$store.getters["Quiz/getsingleQuizResult"];
 
         results.some((el) => {
-          if (el.apiUser.id === userId || el.quizId === quizId) {
+          if (el.apiUser.id === userId && el.quizId === quizId) {
             this.currentMood = "TokenQuiz";
             this.QuizResults = results;
             this.QuizResults = this.QuizResults.slice().sort(

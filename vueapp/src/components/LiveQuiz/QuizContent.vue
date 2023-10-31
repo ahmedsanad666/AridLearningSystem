@@ -181,7 +181,7 @@ export default {
           el.style.visibility = "hidden";
         });
         this.$refs.myLi[choice].style.visibility = "visible";
-        this.$refs.myLi[answer].style.visibility = "visible";
+        // this.$refs.myLi[answer].style.visibility = "visible";
         setTimeout(() => {
           // this.nextQ();
           // this.loadCurrentQ();

@@ -1,4 +1,5 @@
-const BaseUrl = "https://localhost:7243/arid/Quiz";
+// const BaseUrl = "https://localhost:7243/arid/Quiz";
+import { BaseUrl } from "@/store";
 export default {
   async AddQuiz(_, payload) {
     const response = await fetch(BaseUrl, {

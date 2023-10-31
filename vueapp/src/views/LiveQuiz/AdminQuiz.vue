@@ -127,7 +127,7 @@
 
 <script>
 import { HubConnectionBuilder } from "@aspnet/signalr";
-
+import {ApiOriginUrl} from '@/store/index';
 export default {
   data() {
     return {
@@ -220,7 +220,7 @@ export default {
     this.getQuiz(); // create connection
 
     this.connection = new HubConnectionBuilder()
-      .withUrl("https://localhost:7243/hubs/LiveQuiz")
+      .withUrl(`${ApiOriginUrl}/hubs/LiveQuiz`)
       .build();
 
     // connect to methods that hub invokes aka receive notifications from hub

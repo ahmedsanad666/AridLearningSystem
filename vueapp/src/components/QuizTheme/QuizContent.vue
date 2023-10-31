@@ -152,19 +152,20 @@ export default {
     async checkToken() {
       const quizId = +this.$route.params.quizId;
       const userId = this.$store.getters["auth/userId"];
+      console.log(userId)
       this.isLoading = true;
       try {
         await this.$store.dispatch("Quiz/GetSingleQuizResult", quizId);
         const results = this.$store.getters["Quiz/getsingleQuizResult"];
-
+console.log(results);
         results.some((el) => {
-          if (el.apiUser.id === userId || el.quizId === quizId) {
+          if (el.apiUserId === userId && el.quizId === quizId) {
+            console.log('tokenquiz');
             this.currentMood = "TokenQuiz";
             this.QuizResults = results;
             this.QuizResults = this.QuizResults.slice().sort(
               (a, b) => b.totalPoints - a.totalPoints
             );
-            console.log(this.QuizResults)
             this.$emit("TokenQuiz");
             return;
           }

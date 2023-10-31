@@ -397,8 +397,7 @@ namespace webapi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-      
-        
+
         [HttpGet("done/{id}")]
         public async Task<ActionResult<List<QuizResult>>> singleResult(int id)
         {

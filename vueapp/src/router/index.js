@@ -17,10 +17,12 @@ import LeaderBoard from "../views/LeaderBoard.vue";
 import AuthPage from "../views/Auth/AuthPage.vue";
 import AllBlogs from "../views/Blog/AllBlogs.vue";
 import SingleBlog from "../views/Blog/SingleBlog.vue";
+import EditeSlide from '../views/Admin/EditeSlide.vue'
 import AddBlog from "../views/Blog/AddBlog.vue";
 import store from "@/store";
 import NotFound from "../views/NotFound.vue";
 import LessonSlides from "../views/Admin/LessonSlides.vue";
+import StudentsResult from '../views/Admin/StudentsResult.vue';
 // ..............................
 // quiz theme
 import QuizTheme from "../views/QuizTheme/QuizTheme.vue";
@@ -79,11 +81,20 @@ const routes = [
     },
   },
   {
-    path: "/courses/:courseName/:lessonId/",
+    path: "/courses/:courseName/:lessonId",
     name: "lesson",
     component: LessonPage,
     meta: {
       title: "lesson",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/quizResult/:quizId",
+    name: "quizResult",
+    component: StudentsResult,
+    meta: {
+      title: "quizResult",
       requiresAuth: true,
     },
   },
@@ -114,6 +125,15 @@ const routes = [
       title: "Manage slides",
       requiresAuth: true,
     },
+  },
+  {
+    path:'/Admin/Sllides/:lessonId/:customId',
+    component:EditeSlide,
+    name:'EditeSlide',
+    meta:{
+      title:'EditeSlide',
+      requiresAuth:true
+    }
   },
   {
     path: "/Admin/Lessons/allSlides/:lessonId",
@@ -217,6 +237,7 @@ const routes = [
       title: "contact",
     },
   },
+
   ///.......... quiz theme
   {
     path: "/quizTheme/:quizId",

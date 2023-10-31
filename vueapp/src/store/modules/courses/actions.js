@@ -1,6 +1,8 @@
+import { ApiOriginUrl } from "@/store";
+import { apply } from "file-loader";
 export default {
   async AllCourses(context) {
-    const response = await fetch("https://localhost:7243/arid/courses");
+    const response = await fetch(`${ApiOriginUrl}/arid/courses`);
     const responseData = await response.json();
 
     if (!response.ok) {
@@ -16,7 +18,7 @@ export default {
     context.commit("LoadAllCourses", courses);
   },
   async userCourses(context) {
-    const response = await fetch("https://localhost:7243/arid/usercourse");
+    const response = await fetch(`${ApiOriginUrl}/arid/usercourse`);
 
     const responseData = await response.json();
 
@@ -33,7 +35,7 @@ export default {
     context.commit("LoadUserCourses", Usercourses);
   },
   async userchapters(context) {
-    const response = await fetch("https://localhost:7243/arid/coursechapter");
+    const response = await fetch(`${ApiOriginUrl}/arid/coursechapter`);
 
     const responseData = await response.json();
 
@@ -50,7 +52,7 @@ export default {
     context.commit("LoadCoureChapters", chapters);
   },
   async LoadLessons(context) {
-    const response = await fetch("https://localhost:7243/arid/lesson");
+    const response = await fetch(`${ApiOriginUrl}/arid/lesson`);
 
     const responseData = await response.json();
 
@@ -81,7 +83,7 @@ export default {
   //........................ course curd operations..........
   async deleteCourse(_, payload) {
     const response = await fetch(
-      `https://localhost:7243/arid/courses/${payload}`,
+      `${ApiOriginUrl}/arid/courses/${payload}`,
       {
         method: "DELETE",
       }
@@ -93,7 +95,7 @@ export default {
   },
   async UpdateCourse(_, payload) {
     const response = await fetch(
-      `https://localhost:7243/arid/courses/${payload.id}`,
+      `${ApiOriginUrl}/arid/courses/${payload.id}`,
       {
         method: "PUT",
         headers: {
@@ -118,7 +120,7 @@ export default {
       "Content-Type": "application/json",
     };
 
-    const response = await fetch(`https://localhost:7243/arid/courses`, {
+    const response = await fetch(`${ApiOriginUrl}/arid/courses`, {
       method: "POST",
       headers,
       body: JSON.stringify(payload),
@@ -136,7 +138,7 @@ export default {
 
   async deletechapter(_, payload) {
     const response = await fetch(
-      `https://localhost:7243/arid/coursechapter/${payload}`,
+      `${ApiOriginUrl}/arid/coursechapter/${payload}`,
       {
         method: "DELETE",
       }
@@ -149,7 +151,7 @@ export default {
 
   async UpdateChapter(_, payload) {
     const response = await fetch(
-      `https://localhost:7243/arid/coursechapter/${payload.id}`,
+      `${ApiOriginUrl}/arid/coursechapter/${payload.id}`,
       {
         method: "PUT",
         headers: {
@@ -167,7 +169,7 @@ export default {
   },
 
   async AddChapter(_, payload) {
-    const response = await fetch(`https://localhost:7243/arid/coursechapter`, {
+    const response = await fetch(`${ApiOriginUrl}/arid/coursechapter`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Set the Content-Type header to application/json
@@ -188,7 +190,7 @@ export default {
 
   async deletelesson(_, payload) {
     const response = await fetch(
-      `https://localhost:7243/arid/lesson/${payload}`,
+      `${ApiOriginUrl}/arid/lesson/${payload}`,
       {
         method: "DELETE",
       }
@@ -201,7 +203,7 @@ export default {
 
   async UpdateLesson(_, payload) {
     const response = await fetch(
-      `https://localhost:7243/arid/lesson/${payload.id}`,
+      `${ApiOriginUrl}/arid/lesson/${payload.id}`,
       {
         method: "PUT",
         headers: {
@@ -219,7 +221,7 @@ export default {
   },
 
   async AddLesson(_, payload) {
-    const response = await fetch(`https://localhost:7243/arid/lesson`, {
+    const response = await fetch(`${ApiOriginUrl}/arid/lesson`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Set the Content-Type header to application/json
@@ -239,7 +241,7 @@ export default {
   async AddSlides(_, payload) {
     console.log(payload, "action");
     const response = await fetch(
-      `https://localhost:7243/arid/lesson/AddSlides`,
+      `${ApiOriginUrl}/arid/lesson/AddSlides`,
       {
         method: "POST",
         headers: {
@@ -260,7 +262,7 @@ export default {
   },
 
   async AddUserCourse(_, payload) {
-    const response = await fetch(`https://localhost:7243/arid/usercourse`, {
+    const response = await fetch(`${ApiOriginUrl}/arid/usercourse`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Set the Content-Type header to application/json
@@ -277,7 +279,7 @@ export default {
 
   async updateUserCourse(_, payload) {
     const response = await fetch(
-      `https://localhost:7243/arid/usercourse/${payload.id}`,
+      `${ApiOriginUrl}/arid/usercourse/${payload.id}`,
       {
         method: "PUT",
         headers: {
@@ -295,7 +297,7 @@ export default {
   },
 
   async SlideComments(context) {
-    const response = await fetch("https://localhost:7243/arid/slideComment");
+    const response = await fetch(`${ApiOriginUrl}/arid/slideComment`);
 
     const responseData = await response.json();
 
@@ -317,7 +319,7 @@ export default {
   },
 
   async AddComment(_, payload) {
-    const response = await fetch("https://localhost:7243/arid/slideComment", {
+    const response = await fetch(`${ApiOriginUrl}/arid/slideComment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -332,5 +334,55 @@ export default {
     }
 
     console.log(response);
+  },
+  //l.............................
+  async deleteSlide(_,id){
+    const response  = await fetch(`${ApiOriginUrl}/Arid/Lesson/deleteSlide/${id}`,{
+      method:"DELETE"
+    });
+    if(!response.ok){
+      
+      console.log(response);
+      const error = new Error("failed to delete Item");
+      throw error;
+    }
+
+    console.log(response);
+  },
+  //.................................  update slide 
+  async updateSlide(_, payload) {
+   
+    const response = await fetch(
+      `${ApiOriginUrl}/Arid/Lesson/editSlide/${payload.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json", // Set the Content-Type header to application/json
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+     console.log(response)
+    }
+  },
+  async updateQuestion(_, payload) {
+
+    const response = await fetch(
+      `${ApiOriginUrl}/Arid/Lesson/editQuestion/${payload.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json", // Set the Content-Type header to application/json
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+    console.log(response);
+
+    if (!response.ok) {
+      console.log(response);
+    }
   },
 };

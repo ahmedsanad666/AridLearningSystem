@@ -62,7 +62,8 @@
       {{ currentQuestoin.questionText }}
     </h1>
 
-    <div class="py-5 flex justify-center items-center">
+    <div class="py-5 flex justify-center gap-4 items-center">
+      <button @click="chekAns" class=" py-3 px-6  rounded-lg  bg-white  text-slate-700">ارسال</button>
       <input
         @keyup.enter="chekAns"
         v-model.trim="AnsInput"
@@ -141,7 +142,7 @@ export default {
         const results = this.$store.getters["Quiz/getsingleQuizResult"];
 
         results.some((el) => {
-          if (el.apiUser.id === userId || el.quizId === quizId) {
+          if (el.apiUser.id === userId && el.quizId === quizId) {
             this.currentMood = "TokenQuiz";
             this.QuizResults = results;
             this.QuizResults = this.QuizResults.slice().sort(
@@ -210,7 +211,7 @@ export default {
           this.nextQ();
 
           this.loadCurrentQ();
-        }, 4000);
+        }, 2000);
       }
     },
   },

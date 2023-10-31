@@ -1,8 +1,8 @@
 import Blog from ".";
-
+import { ApiOriginUrl } from "@/store";
 export default {
   async AllBlogs(context ){
-    const response = await fetch("https://localhost:7243/arid/blog");
+    const response = await fetch(`${ApiOriginUrl}/arid/blog`);
       const responseData = await response.json();
     
       if (!response.ok) {
@@ -20,7 +20,7 @@ export default {
 
 
     async AddBlog(_,paylaod ){
-      const response = await fetch("https://localhost:7243/arid/blog",
+      const response = await fetch(`${ApiOriginUrl}/arid/blog`,
       {
         method:'POST',
       

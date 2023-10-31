@@ -70,13 +70,21 @@
               />
             </router-link>
           </div>
+            <div class=" flex justify-between gap-2">
 
-          <router-link
-          v-if="quiz.type === 'multipleChoices'"
-            class="py-1 w-full text-center rounded-md bg-green-700 text-white my-2"
-            :to="`/QuizLink/${quiz.id}`"
-            >Live Quiz</router-link
-          >
+              <router-link
+              v-if="quiz.type === 'multipleChoices'"
+              class="py-1 w-full text-center rounded-md bg-green-700 text-white my-2"
+              :to="`/QuizLink/${quiz.id}`"
+              >Live Quiz</router-link
+              >
+              <router-link
+             
+              class="py-1 w-full text-center rounded-md bg-green-700 text-white my-2"
+              :to="`/quizResult/${quiz.id}`"
+              >النتائج </router-link
+              >
+            </div>
         </div>
       </div>
     </div>
