@@ -148,7 +148,6 @@ export default {
             this.QuizResults = this.QuizResults.slice().sort(
               (a, b) => b.totalPoints - a.totalPoints
             );
-            console.log(this.QuizResults);
 
             this.$emit("TokenQuiz");
             return;
@@ -172,7 +171,6 @@ export default {
         counter: this.QCounter,
         time: this.currentQuestoin.time,
       };
-console.log(this.currentQuestoin)
       this.$emit("SetTime", data);
     },
     chekAns() {
