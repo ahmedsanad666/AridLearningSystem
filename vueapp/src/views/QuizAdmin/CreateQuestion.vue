@@ -84,7 +84,10 @@
             </li>
           </ul>
           <div v-else-if="QuizData.type === 'fillTheBlank'">
-            {{ q.answer }}
+            <ul v-for="(e , k) in q.answers" :key="k">
+              <li>{{ e }}</li>
+            </ul>
+            
           </div>
 
           <div class="flex items-center justify-around py-2">
@@ -145,6 +148,7 @@ export default {
         .toISOString()
         .split("T")[0];
       this.user = this.QuizData.apiUser.email;
+     console.log(this.QuizData);
     },
   },
   created() {

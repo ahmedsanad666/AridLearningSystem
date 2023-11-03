@@ -63,12 +63,37 @@
             />
           </div>
           <div class="grow flex justify-center items-center flex-col border">
-            <input
-              v-model.trim="rigthAnswer"
-              type="text"
-              placeholder="اكتب الاجابة الصحيحة"
-              class="py-3 px-4 md:w-1/2 m-auto w-3/4 outline-none bg-[rgba(0,0,0,.5)] rounded-lg text-white focus:border"
-            />
+
+            <div>
+              <div class=" text-white text-center py-3">ادخل اكثر من اجابة صحيحة </div>
+              <input
+                type="text"
+                class="mx-2 py-1 px-2 rounded-sm shadow-md outline-none"
+                v-model="choice"
+                placeholder="اضافة اجابة"
+              />
+              <span
+                @click="AddChoice()"
+                class="py-1 px-3 bg-slate-400 hover:bg-slate-900 hover:text-white cursor-pointer"
+              >
+                اضافة
+              </span>
+            </div>
+
+            <ul class="  w-1/3 py-2  space-y-2 gap-3 text-white  grid grid-cols-2 ">
+              <li
+                class="py-2 px-3  shadow-md  relative  m-auto  w-full "
+                @click="removeChoice(key)"
+                v-for="(choice, key) in currentChoices"
+                :key="key"
+              >
+                <font-awesome-icon
+                  :icon="['fas', 'xmark']"
+                  class="absolute top-2 left-2 cursor-pointer p-1 bg-slate-600 text-white"
+                />
+                {{ key + 1 }}: {{ choice }}
+              </li>
+            </ul>
           </div>
         </form>
       </div>
@@ -82,7 +107,8 @@ export default {
     return {
       isLoading: false,
       questionText: "",
-      choices: [],
+      choice: "",
+      currentChoices: [],
       colors: [
         "#D9687C",
         "#EEB243",
@@ -94,7 +120,7 @@ export default {
         "#2d3436",
       ],
       questionText: "",
-      rigthAnswer: "",
+      // rigthAnswer: "",
       error: "",
       QuizPoint: 10,
       selectedTime: 30, // Default to 30 seconds
@@ -109,6 +135,14 @@ export default {
     };
   },
   methods: {
+    removeChoice(e) {
+     
+      this.currentChoices.splice(e, 1);
+    },
+    AddChoice() {
+      this.currentChoices.push(this.choice);
+      this.choice = "";
+    },
     getRandomColor() {
       const randomColorIndex = Math.floor(Math.random() * this.colors.length);
       return this.colors[randomColorIndex];
@@ -119,7 +153,7 @@ export default {
         this.QuizPoint === null ||
         this.questionText === "" ||
         this.selectedTime === null ||
-        this.rigthAnswer === "" ||
+        this.currentChoices.length === 0 ||
         this.quizId === null
       ) {
         alert("رجاء املا كلالفراغات ");
@@ -130,7 +164,7 @@ export default {
         point: this.QuizPoint,
         time: this.selectedTime,
         quizId: +QuizId,
-        answer: this.rigthAnswer,
+        answers: this.currentChoices,
       };
 
       this.isLoading = true;

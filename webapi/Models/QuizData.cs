@@ -69,7 +69,15 @@ public class FillTheBlankQuiz
     public String QuestionText { get; set; }
     public int Point { get; set; }
     public int Time { get; set; }
-    public string Answer { get; set; }
+    [NotMapped]
+    public ICollection<string> Answers { get; set; }
+    public string AnswersString
+    {
+        get { return string.Join(",", Answers); }
+        set { Answers = value.Split(',').ToList(); }
+
+
+    }
     public int QuizId { get; set; } 
     public Quiz Quiz { get; set; }
 }

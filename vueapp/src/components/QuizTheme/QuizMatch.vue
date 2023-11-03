@@ -82,6 +82,7 @@
         @dragenter="dragEnter"
         @drop.prevent="drop($event, k + 1)"
         @dragover.prevent="dragOver"
+     
         :style="{ backgroundColor: getRandomColor() }"
         class="flex justify-center grow items-center md:py-0 py-3 background-container md:text-3xl text-2xl rounded-md cursor-pointer"
         v-for="(q, k) in currentQuestoin.choices"

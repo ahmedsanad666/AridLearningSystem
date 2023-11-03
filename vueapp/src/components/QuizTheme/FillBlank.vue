@@ -172,13 +172,17 @@ export default {
         counter: this.QCounter,
         time: this.currentQuestoin.time,
       };
-
+console.log(this.currentQuestoin)
       this.$emit("SetTime", data);
     },
     chekAns() {
-      const answer = this.currentQuestoin.answer;
+      const answer = this.currentQuestoin.answers;
+      
+      const QResult = answer.some(el=>{
+        return el === this.AnsInput
+      })
 
-      if (this.AnsInput === answer) {
+      if (QResult) {
         //     // streak
         this.RightAnswers.push(this.allQ.indexOf(this.currentQuestoin));
         const lastIndex = this.RightAnswers.length - 1;
@@ -203,7 +207,7 @@ export default {
           this.nextQ();
 
           this.loadCurrentQ();
-        }, 4000);
+        }, 2000);
       } else {
         this.$emit("WrongAnswer");
 

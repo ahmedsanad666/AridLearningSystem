@@ -53,36 +53,40 @@
         >
           <div class="grow flex justify-end flex-col">
             <ul
-              class="w-full grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
+              class="w-full grid lg:grid-cols-4 grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
             >
-              <li class="space-y-3">
-                <!-- <div v-if="pic_1">
-                  <img
-                    :src="imageUrl1"
-                    alt="uploaded image"
-                    class="rounded-md"
-                  />
-                </div> -->
-                <h3 v-if="pic_1">uploaded</h3>
-                <div v-else>
+              <li class="space-y-3 py-5">
+           
+                <h3 v-if="pic_1" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
+                <div> رقم الاجابة {{ AnswerIndex }}</div>
+                </h3>
+
+                <div v-else class=" flex  flex-col gap-3   py-md-5" >
                   <input type="number" v-model.number="AnswerIndex" />
+                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
                   <input
                     type="file"
                     ref="fileInput1"
+                    
                     @change="uploadImage(1)"
                     :style="{ backgroundColor: getRandomColor() }"
                   />
 
                   <div>
-                    <span @click="sendImage(1)">upload</span>
+                    <span @click="sendImage(1)">رفع الصورة</span>
                   </div>
                 </div>
               </li>
 
-              <li>
-                <h3 v-if="pic_2">uploaded</h3>
-                <div v-else>
+              <li class="space-y-3 py-5">
+                <h3 v-if="pic_2" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
+                  <div> رقم الاجابة {{ 
+                    AnswerIndex2 }}</div>
+</h3>
+                
+               <div v-else class=" flex  flex-col gap-3   py-md-5" >
                   <input type="number" v-model.number="AnswerIndex2" />
+                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
 
                   <input
                     ref="fileInput2"
@@ -91,14 +95,20 @@
                     :style="{ backgroundColor: getRandomColor() }"
                   />
                   <div>
-                    <span @click="sendImage(2)">upload</span>
+                    <span @click="sendImage(2)">رفع الصورة</span>
                   </div>
                 </div>
               </li>
-              <li>
-                <h3 v-if="pic_3">uploaded</h3>
-                <div v-else>
+              <li class="space-y-3 py-5">
+
+                <h3 v-if="pic_3" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
+                  <div> رقم الاجابة {{ AnswerIndex3 }}</div>
+
+                </h3>
+                
+                <div v-else class=" flex  flex-col gap-3   py-md-5" >
                   <input type="number" v-model.number="AnswerIndex3" />
+                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
 
                   <input
                     ref="fileInput3"
@@ -107,15 +117,19 @@
                     :style="{ backgroundColor: getRandomColor() }"
                   />
                   <div>
-                    <span @click="sendImage(3)">upload</span>
+                    <span @click="sendImage(3)">رفع الصوره</span>
                   </div>
                 </div>
               </li>
 
-              <li>
-                <h3 v-if="pic_4">uploaded</h3>
-                <div v-else>
+              <li class="space-y-3 py-5">
+                <h3 v-if="pic_4" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
+                 <div>رقم الاجابة {{ AnswerIndex4 }}</div>
+                </h3>
+                
+                <div v-else class=" flex  flex-col gap-3   py-md-5" >
                   <input type="number" v-model.number="AnswerIndex4" />
+                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
 
                   <input
                     ref="fileInput4"
@@ -124,7 +138,7 @@
                     :style="{ backgroundColor: getRandomColor() }"
                   />
                   <div>
-                    <span @click="sendImage(4)">upload</span>
+                    <span @click="sendImage(4)">رفع الصورة</span>
                   </div>
                 </div>
               </li>
@@ -140,6 +154,7 @@
                   type="text"
                   v-model="choices[0]"
                   :style="{ backgroundColor: getRandomColor() }"
+                  placeholder="الاجابة رقم 1"
                 />
               </li>
               <li>
@@ -147,6 +162,8 @@
                   type="text"
                   v-model="choices[1]"
                   :style="{ backgroundColor: getRandomColor() }"
+                  placeholder="الاجابة رقم 2"
+
                 />
               </li>
               <li>
@@ -154,6 +171,9 @@
                   type="text"
                   v-model="choices[2]"
                   :style="{ backgroundColor: getRandomColor() }"
+                  placeholder="الاجابة رقم 3"
+                  
+
                 />
               </li>
               <li>
@@ -161,6 +181,8 @@
                   type="text"
                   v-model="choices[3]"
                   :style="{ backgroundColor: getRandomColor() }"
+                  placeholder="الاجابة رقم 4"
+
                 />
               </li>
             </ul>
@@ -307,9 +329,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+span{
+  cursor: pointer;
+  padding: .2rem 2rem;
+  border-radius: 10px;
+  background: lavender;
+  color:rebeccapurple
+  
+}
 img {
   width: 4rem;
 }
+// input[type='file'] , input[type='number']{
+// width: 50%;
+
+// }
 ul {
   li {
     position: relative;
