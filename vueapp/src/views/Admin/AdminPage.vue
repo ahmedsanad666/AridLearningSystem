@@ -182,6 +182,10 @@ export default {
     addNew() {
       this.AddNewMood = true;
       this.hidden = false;
+      this.updateCourseData.name = '';
+       this.updateCourseData.description = '';
+       this.updateCourseData.isActive = true;
+       this.updateCourseData.isFeatured = true;
     },
     async submitData() {
       this.formIsValid = true;
@@ -221,6 +225,10 @@ export default {
         // location.reload();
         await this.loadCourses();
         this.hidden = true;
+       this.updateCourseData.name = '';
+       this.updateCourseData.description = '';
+       this.updateCourseData.isActive = true;
+       this.updateCourseData.isFeatured = true;
       
       } catch (e) {
         this.error = e.message || "failed to update";

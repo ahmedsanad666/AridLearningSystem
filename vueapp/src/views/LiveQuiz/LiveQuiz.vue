@@ -306,16 +306,23 @@ export default {
     },
   },
   created() {
+    const currentPresentationId  = this.$route.params.presentationId;
+    const currentUserName = this.userName;
     const presentationId = localStorage.getItem("presentationId");
     const userName = localStorage.getItem("userName");
     console.log(localStorage.getItem('quizStarted'));
      this.quizStarted = localStorage.getItem('quizStarted')
-    console.log(this.quizStarted)
-    if (presentationId && userName ) {
-
+    console.log(currentUserName === userName )
+    if (!!presentationId && !!userName && presentationId === currentPresentationId  ) {
+console.log('tamaam thisi is user');
       this.userName = userName;
       this.enterQuiz = true;
-    } 
+    }else{
+      localStorage.removeItem("presentationId");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("quizStarted");
+    }
+
   },
   async mounted() {
     // create connection
@@ -326,6 +333,7 @@ export default {
     this.userconnection.on("Started", (value) => {
       this.quizStarted = value;
       localStorage.setItem('quizStarted',true)
+      console.log(this.quizStarted + ' stareded quiz now ');
     });
 
     
@@ -337,9 +345,11 @@ export default {
       console.log(this.QCounter, "livequiz page");
     });
     this.userconnection.on("endQuiz", () => {
-      this.endQuiz = true;
       localStorage.removeItem("presentationId");
       localStorage.removeItem("userName");
+      localStorage.removeItem("quizStarted");
+    
+      this.endQuiz = true;
     });
 
     this.userconnection

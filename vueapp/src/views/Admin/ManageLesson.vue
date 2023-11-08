@@ -167,7 +167,10 @@ export default {
       }
       this.isLoading = false;
     },
-    update(id) {
+   async update(id) {
+      await this.$store.dispatch("courses/AllCourses");
+        await this.$store.dispatch("courses/LoadLessons");
+        await this.$store.dispatch("courses/userchapters");
       let chapter = this.$store.getters["courses/allLessons"].find(
         (el) => el.id == id
       );
@@ -180,6 +183,8 @@ export default {
     addNew() {
       this.AddNewMood = true;
       this.hidden = false;
+      this.updateCourseData.name = '';
+        this.updateCourseData.active = true;
     },
     async submitData() {
       this.formIsValid = true;
@@ -221,6 +226,10 @@ export default {
 
         this.loadLessons();
         this.hidden = true;
+        this.updateCourseData.name = '';
+        this.updateCourseData.index = 0;
+        this.updateCourseData.active = true;
+        
       } catch (e) {
         this.error = e.message || "failed to update";
       }

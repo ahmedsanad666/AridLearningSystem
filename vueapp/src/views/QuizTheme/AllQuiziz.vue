@@ -7,7 +7,7 @@
     </div>
     <div
       v-else
-      class="md:w-3/4 w-[70%] py-3 grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-5 m-auto"
+      class="md:w-3/4 w-[70%] py-3 grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-5  gap-y-20 m-auto"
     >
       <div class="text-center text-red-600 text-2xl font-bold" v-if="error">
         {{ error }}

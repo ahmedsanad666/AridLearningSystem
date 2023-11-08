@@ -46,24 +46,24 @@
     <div v-if="error">{{ error }}</div>
     <base-spinner v-if="isLoading"></base-spinner>
     <div v-else class="bg-slate-200 min-h-screen py-5">
-      <div class="bg-[#461A42] h-[80vh] md:w-[85%] m-auto rounded-3xl">
+      <div class="bg-[#461A42] h-[80vh] lg:w-[40%] w-[90%] m-auto rounded-3xl">
         <form
           @submit.prevent="submitData"
           class="h-full flex flex-col justify-between"
         >
           <div class="grow flex justify-end flex-col">
             <ul
-              class="w-full grid lg:grid-cols-4 grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
+              class="w-full basis-[40vh] gap-3 px-4 py-3"
             >
-              <li class="space-y-3 py-5">
+              <li class="space-y-3 py-5"  v-if=" currentInput === 1">
            
                 <h3 v-if="pic_1" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
                 <div> رقم الاجابة {{ AnswerIndex }}</div>
                 </h3>
 
                 <div v-else class=" flex  flex-col gap-3   py-md-5" >
-                  <input type="number" v-model.number="AnswerIndex" />
-                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
+                  <input type="number" v-model.number="AnswerIndex"   readonly hidden/>
+                  <!-- <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div> -->
                   <input
                     type="file"
                     ref="fileInput1"
@@ -72,21 +72,21 @@
                     :style="{ backgroundColor: getRandomColor() }"
                   />
 
-                  <div>
-                    <span @click="sendImage(1)">رفع الصورة</span>
+                  <div class="  text-center py-4">
+                    <span @click="sendImage(1)"  >رفع السؤال</span>
                   </div>
                 </div>
               </li>
 
-              <li class="space-y-3 py-5">
+              <li class="space-y-3 py-5" v-else-if="currentInput === 2">
                 <h3 v-if="pic_2" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
                   <div> رقم الاجابة {{ 
                     AnswerIndex2 }}</div>
 </h3>
                 
                <div v-else class=" flex  flex-col gap-3   py-md-5" >
-                  <input type="number" v-model.number="AnswerIndex2" />
-                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
+                  <input type="number" v-model.number="AnswerIndex2"   readonly hidden/>
+                  <!-- <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div> -->
 
                   <input
                     ref="fileInput2"
@@ -94,12 +94,12 @@
                     @change="uploadImage(2)"
                     :style="{ backgroundColor: getRandomColor() }"
                   />
-                  <div>
-                    <span @click="sendImage(2)">رفع الصورة</span>
+                  <div class="  text-center py-4">
+                    <span @click="sendImage(2)">رفع السؤال </span>
                   </div>
                 </div>
               </li>
-              <li class="space-y-3 py-5">
+              <li class="space-y-3 py-5" v-else-if="currentInput === 3">
 
                 <h3 v-if="pic_3" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
                   <div> رقم الاجابة {{ AnswerIndex3 }}</div>
@@ -107,8 +107,8 @@
                 </h3>
                 
                 <div v-else class=" flex  flex-col gap-3   py-md-5" >
-                  <input type="number" v-model.number="AnswerIndex3" />
-                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
+                  <input type="number" v-model.number="AnswerIndex3"  readonly hidden />
+                  <!-- <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div> -->
 
                   <input
                     ref="fileInput3"
@@ -116,20 +116,20 @@
                     @change="uploadImage(3)"
                     :style="{ backgroundColor: getRandomColor() }"
                   />
-                  <div>
-                    <span @click="sendImage(3)">رفع الصوره</span>
+                  <div class="  text-center py-4">
+                    <span @click="sendImage(3)">رفع السؤال</span>
                   </div>
                 </div>
               </li>
 
-              <li class="space-y-3 py-5">
+              <li class="space-y-3 py-5" v-else-if="currentInput === 4">
                 <h3 v-if="pic_4" class="text-white w-1/2   m-auto " >الان اكتب الاجابة فى رقم الاجابة المناسب بالاسفل 
                  <div>رقم الاجابة {{ AnswerIndex4 }}</div>
                 </h3>
                 
                 <div v-else class=" flex  flex-col gap-3   py-md-5" >
-                  <input type="number" v-model.number="AnswerIndex4" />
-                  <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div>
+                  <input type="number" v-model.number="AnswerIndex4"  readonly hidden/>
+                  <!-- <div class="text-white">  اختر رقم الاجابة اولا ثم الصوره</div> -->  
 
                   <input
                     ref="fileInput4"
@@ -137,19 +137,20 @@
                     @change="uploadImage(4)"
                     :style="{ backgroundColor: getRandomColor() }"
                   />
-                  <div>
-                    <span @click="sendImage(4)">رفع الصورة</span>
+                  <div class="  text-center py-4">
+                    <span @click="sendImage(4)">رفع السؤال</span>
                   </div>
                 </div>
               </li>
+              <h1  v-else class=" text-center py-8 text-3xl text-white">قم بحفظ السؤال الان</h1>
             </ul>
           </div>
           <!-- ........................ -->
           <div class="grow flex justify-end flex-col">
             <ul
-              class="w-full grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 basis-[40vh] gap-3 px-4 py-3"
+              class="w-full grid grid-cols-1 basis-[40vh] gap-3 px-4 py-3"
             >
-              <li>
+              <li v-if="currentInput ===1">
                 <input
                   type="text"
                   v-model="choices[0]"
@@ -157,7 +158,7 @@
                   placeholder="الاجابة رقم 1"
                 />
               </li>
-              <li>
+              <li v-else-if="currentInput === 2">
                 <input
                   type="text"
                   v-model="choices[1]"
@@ -166,7 +167,7 @@
 
                 />
               </li>
-              <li>
+              <li v-else-if="currentInput === 3">
                 <input
                   type="text"
                   v-model="choices[2]"
@@ -176,7 +177,7 @@
 
                 />
               </li>
-              <li>
+              <li v-else-if="currentInput === 4">
                 <input
                   type="text"
                   v-model="choices[3]"
@@ -197,6 +198,7 @@
 export default {
   data() {
     return {
+      currentInput:1,
       pic_1: false,
       pic_2: false,
       pic_3: false,
@@ -209,7 +211,7 @@ export default {
       imageUrl2: null,
       imageUrl3: null,
       imageUrl4: null,
-      choices: [],
+      choices: ['','','',''],
       colors: [
         "#D9687C",
         "#EEB243",
@@ -234,10 +236,10 @@ export default {
         { value: 120, label: "2 minutes" },
         { value: 300, label: "5 minutes" },
       ],
-      AnswerIndex: 0,
-      AnswerIndex2: 0,
-      AnswerIndex3: 0,
-      AnswerIndex4: 0,
+      AnswerIndex: 1,
+      AnswerIndex2: 2,
+      AnswerIndex3: 3,
+      AnswerIndex4:4,
     };
   },
   methods: {
@@ -253,21 +255,37 @@ export default {
       }
       const data = new FormData();
       if (index === 1) {
+        if(this.choices[0] === ''){
+          alert('رجاء اكتب الاجابه');
+          return;
+        }
         data.append("AnswerIndex", this.AnswerIndex);
         data.append("questionId", this.customId + "" + this.AnswerIndex);
 
         this.pic_1 = true;
       } else if (index === 2) {
+        if(this.choices[1] === ''){
+          alert('رجاء اكتب الاجابه');
+          return;
+        }
         data.append("AnswerIndex", this.AnswerIndex2);
         data.append("questionId", this.customId + "" + this.AnswerIndex2);
 
         this.pic_2 = true;
       } else if (index === 3) {
+        if(this.choices[2] === ''){
+          alert('رجاء اكتب الاجابه');
+          return;
+        }
         data.append("AnswerIndex", this.AnswerIndex3);
         data.append("questionId", this.customId + "" + this.AnswerIndex3);
 
         this.pic_3 = true;
       } else {
+        if(this.choices[3] === ''){
+          alert('رجاء اكتب الاجابه');
+          return;
+        }
         data.append("AnswerIndex", this.AnswerIndex4);
         data.append("questionId", this.customId + "" + this.AnswerIndex4);
 
@@ -278,6 +296,7 @@ export default {
 
       try {
         await this.$store.dispatch("Quiz/uploadImage", data);
+        this.currentInput++;
       } catch (e) {
         this.error = e.message || "فشل فى ارسال البيانات";
       }
@@ -331,7 +350,7 @@ export default {
 <style lang="scss" scoped>
 span{
   cursor: pointer;
-  padding: .2rem 2rem;
+  padding: .5rem 2rem;
   border-radius: 10px;
   background: lavender;
   color:rebeccapurple

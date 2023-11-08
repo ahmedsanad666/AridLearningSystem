@@ -135,6 +135,7 @@ export default {
       connection: null,
       quizStarted: false,
       connectedUsers: [],
+      
       currentQuestion: 0,
       quizData: [],
       Qnumber: 0,
@@ -161,6 +162,10 @@ export default {
     showResult() {
       this.Result = true;
       this.connection.send("EndQuiz");
+
+      this.currentQuestion = 0;
+    
+     
     },
     async getQuiz() {
       const QuizId = +this.$route.params.quizId;
@@ -217,6 +222,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.currentQuestion)
     this.getQuiz(); // create connection
 
     this.connection = new HubConnectionBuilder()
@@ -226,6 +232,7 @@ export default {
     // connect to methods that hub invokes aka receive notifications from hub
 
     this.connection.on("UserConnected", (users) => {
+      console.log('added or removed');
       this.connectedUsers = Object.values(users);
     });
     this.connection.on("Started", () => {

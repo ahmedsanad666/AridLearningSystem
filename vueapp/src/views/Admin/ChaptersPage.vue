@@ -147,7 +147,9 @@
         }
         this.isLoading = false;
       },
-      update(id) {
+      async update(id) {
+        await this.$store.dispatch("courses/AllCourses");
+          await this.$store.dispatch("courses/userchapters");
         let chapter = this.$store.getters["courses/CoureChapters"].find(el => el.id == id);
         // let chapter = this.allChapters.find((el) => el.id == id);
         this.AddNewMood = false;
@@ -158,6 +160,9 @@
       addNew() {
         this.AddNewMood = true;
         this.hidden = false;
+        this.updateCourseData.name = '';
+        this.updateCourseData.isHidden = true; 
+
         
       },
       async submitData() {
@@ -203,7 +208,10 @@
   
          await this.loadChapters();
         this.hidden = true;
-        
+        this.updateCourseData.name = '';
+        this.updateCourseData.index = 0;
+        this.updateCourseData.isHidden = true; 
+
         } catch (e) {
           this.error = e.message || "failed to update";
         }

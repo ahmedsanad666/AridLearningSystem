@@ -116,11 +116,15 @@
             />
             <span> اختر رقم الاجابة الصيحيه</span>
           </div>
-          <input
+          <div>
+
+            <input
             type="number"
             v-model="slide.questions.point"
             placeholder="point"
-          />
+            />
+            <span>  حدد عدد النقاط</span>
+          </div>
         </div>
 
         <div class="flex flex-col">

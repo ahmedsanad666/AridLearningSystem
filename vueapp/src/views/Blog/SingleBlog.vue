@@ -7,6 +7,14 @@
 
         <h1 class="text-center md:text-3xl text-xl font-bold">{{ blog.title }}</h1>
 <base-spinner v-if="isLoading"></base-spinner>
+<div class="  w-[70%] m-auto py-4 my-4 h-[40vh]">
+    <img class= "rounded-lg  w-full h-full object-cover"
+         :src="`data:image/jpeg;base64,${blog.imgByte
+}`"
+          
+         
+        />
+</div>
         <div class="  w-3/4 m-auto rounded-2xl shadow-lg py-4 px-3 my-3 " v-html="formattedContent">
         </div>
     </div>
@@ -40,7 +48,7 @@ export default {
            const  Blogs = this.$store.getters['blog/AllBlogs'];
             
            this.blog = Blogs.find(blog => blog.id == blogId);
-        
+        console.log(this.blog)
             }catch(e){
 this.error = e.message || "failed to get Blog data";
             }

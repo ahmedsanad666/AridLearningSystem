@@ -186,6 +186,8 @@ export default {
       const currentChoice = choice;
       this.counter++;
 
+      console.log(rightAns , currentChoice);
+      console.log(rightAns === currentChoice);
       if (rightAns === currentChoice) {
         this.answers.push(true);
 
@@ -250,6 +252,10 @@ export default {
       this.allQ = Object.values(this.allQ);
 
       this.currentQuestoin = this.allQ[this.QCounter];
+      console.log(this.currentQuestoin.choices);
+      this.currentQuestoin.pics.sort(() => Math.random() - 0.5);  
+    console.log(this.currentQuestoin.choices);
+    console.log(this.currentQuestoin.pics)
       const data = {
         counter: this.QCounter,
         time: this.currentQuestoin.time,
@@ -280,6 +286,9 @@ export default {
       }
     },
   },
+ 
+  
+  
 };
 </script>
 

@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="md:w-1/2 w-3/4 px-4 py-3 min-h-screen md:m-0 m-auto">
-      <h1 class="py-3 my-4">{{ QuizData.name }}</h1>
+        <h1 class="py-3 my-4">{{ QuizData.name }}</h1>
       <div class="flex items-center">
         <router-link
           :to="`/AddQuestion/${QiuzData.quizId}/${QiuzData.Type}`"
@@ -89,12 +89,27 @@
             </ul>
             
           </div>
+          <div v-else-if="QuizData.type === 'match'">
+           <ul class=" py-3 w-[80%] m-auto flex justify-between ">
+            
+            <li v-for="(w , k) in q.choices" :key="k"> {{ w }}</li>
+           </ul>
+           <ul class=" py-3 w-[80%] m-auto grid grid-cols-4  ">
+            
+            <li v-for="(w , k) in q.pics" :key="k" class=" text-center">   <img class= "rounded-sm"
+ style=" width: 50px;"          :src="`data:image/jpeg;base64,${w.imgByte
+}`"
+          
+         
+        /></li>
+           </ul>
+          </div>
 
           <div class="flex items-center justify-around py-2">
             <div
               class="outline-none bg-slate-300 border-none rounded-md py-1 px-10 cursor-pointer"
             >
-              {{ q.time }} ثانية
+              {{ q.time }} ثانية 
             </div>
             <div
               class="outline-none bg-slate-300 border-none rounded-md py-1 px-10 cursor-pointer"

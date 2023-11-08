@@ -72,6 +72,7 @@
               :class="[
                 { disabled: lesson.active == false },
                 { hidden: lesson.chapterId !== el.id },
+               
               ]"
             >
               <router-link
@@ -80,10 +81,11 @@
               >
                 {{ lesson.chapterId == el.id ? lesson.name : "" }}
               </router-link>
-              <font-awesome-icon
-                :icon="['fas', 'lock']"
-                v-if="!lesson.active"
-              />
+                <font-awesome-icon
+                  :icon="['fas', 'lock']"
+                  v-if="!lesson.active"
+                />
+                <font-awesome-icon :icon="['fas', 'circle-check']" v-if="lesson.active" />
             </li>
           </ul>
         </ul>
@@ -312,4 +314,5 @@ ul {
   pointer-events: none; /* Disable pointer events */
   opacity: 0.6; /* Apply a visual indication of disabled state */
 }
+
 </style>

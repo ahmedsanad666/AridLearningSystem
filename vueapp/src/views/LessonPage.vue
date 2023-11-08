@@ -166,7 +166,7 @@
             tryAgain
           </button>
 
-          <button
+          <!-- <button
             ref="next"
             :class="chekDisabled ? ' bg-slate-400 ' : 'bg-[#c0392b]'"
             class="py-3 px-9 rounded-xl mx-8 text-mianColor"
@@ -176,12 +176,12 @@
               isRightAns &&
               !endLesson &&
               next
-            "
+            " 
             @click="nexQuestion"
             :disabled="chekDisabled"
           >
             Next
-          </button>
+          </button> -->
           <button
             @click="updateCourseData()"
             class="py-3 px-9 rounded-xl mx-8 text-mianColor bg-red-700"

@@ -62,6 +62,10 @@ namespace webapi.Hubs
         public async Task EndQuiz()
         {
             await Clients.AllExcept(AdminConnectionId).SendAsync("endQuiz");
+            connectedUsers.Clear();
+            quizStarted = false;
+            CurrentQuestionNumber = 0;
+            UserAnswers.Clear();
         }
         public async Task NextQuestion()
         {
